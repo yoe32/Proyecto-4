@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Assets/Scenes/CityBattleScene.unity
-  isLoaded: 1
-  isActive: 1

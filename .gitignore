@@ -2,13 +2,13 @@
 # Unity generated #
 # =============== #
 
-./SteelArena/[Ll]ibrary/
-./SteelArena/[Tt]emp/
-./SteelArena/[Oo]bj/
-./SteelArena/[Bb]uild/
-./SteelArena/[Bb]uilds/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
 
-./SteelArena/Assets/AssetStoreTools*
+/SteelArena/Assets/AssetStoreTools*
 UnityGenerated/
 *.pidb.meta
 sysinfo.txt
