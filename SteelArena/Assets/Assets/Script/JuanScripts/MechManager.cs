@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using DigitalRuby.PyroParticles;
+using UnityEditor;
 
 public class MechManager : MonoBehaviour
 {
@@ -454,4 +455,25 @@ public class MechManager : MonoBehaviour
 
 		return null;
 	}
+
+
+	public void savePrefab(){
+
+
+		GameObject clone = PrefabUtility.CreatePrefab ("Assets/testerino.prefab", rootGo);
+
+		Instantiate(clone, new Vector3(0,0,0), Quaternion.identity);
+
+	}
+
+
+
+
+	public void printWeapons(){
+
+
+
+
+	}
+
 }
