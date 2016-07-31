@@ -4,6 +4,11 @@ using UnityEngine.UI;
 using DigitalRuby.PyroParticles;
 using UnityEditor;
 
+
+
+/// comentario
+
+
 public class MechManager : MonoBehaviour
 {
 	public List<MechPrefab> mechParts = new List<MechPrefab>();
