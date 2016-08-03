@@ -8,6 +8,7 @@ public class Splash : MonoBehaviour {
 
 	Image uiImage;
 	Canvas parentCanvas;
+	AudioSource deadmau5Audio;
 
 	[SerializeField]
 	Sprite[] images; // cantidad de imagenes
@@ -29,8 +30,8 @@ public class Splash : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		parentCanvas = GetComponent<Canvas>();
-		parentCanvas.GetComponent<AudioSource> ().Stop();
-
+		deadmau5Audio = parentCanvas.GetComponent<AudioSource> ();
+		StopMusic();
 
 		if (parentCanvas.worldCamera != Camera.main)
 			parentCanvas.worldCamera = Camera.main;
@@ -54,8 +55,8 @@ public class Splash : MonoBehaviour {
 		{
 			if (i == 1) 
 			{
-				//parentCanvas.GetComponent<AudioSource>().Play();
-			//	DontDestroyOnLoad (parentCanvas);
+				PlayMusic ();
+				DontDestroyOnLoad (deadmau5Audio);
 			}
 			uiImage.sprite = images[i];
 			uiImage.color = new Color(uiImage.color.r, uiImage.color.g, uiImage.color.b, 0);
@@ -83,6 +84,13 @@ public class Splash : MonoBehaviour {
 
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 		Application.LoadLevel ("LoadingScene");
-
+	}
+	void StopMusic()
+	{
+		deadmau5Audio.Stop();
+	}
+	void PlayMusic ()
+	{
+		deadmau5Audio.Play();
 	}
 }

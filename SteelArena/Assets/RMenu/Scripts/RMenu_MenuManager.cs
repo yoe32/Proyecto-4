@@ -17,6 +17,7 @@ public class RMenu_MenuManager : MonoBehaviour
         Left
     }
 
+	GameObject levelAudio;
 	GameObject startButton;
 	Button levelButton;
 	public int actualLevelInMenu;
@@ -43,8 +44,11 @@ public class RMenu_MenuManager : MonoBehaviour
 
     private void Awake()
     {
-		startButton = GameObject.FindGameObjectWithTag ("StartButton");
+		levelAudio = GameObject.FindGameObjectWithTag ("LevelAudio");
+		levelAudio.GetComponent<AudioSource> ().Play ();
+		DontDestroyOnLoad (levelAudio);
 
+		startButton = GameObject.FindGameObjectWithTag ("StartButton");
 		startButton.GetComponent<Button> ().interactable = true;
 
 		if (levelButton == null) 
