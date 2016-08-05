@@ -6,17 +6,17 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour 
 {
 	public static bool charging;
-	public Button button;
+	GameObject splash;
 
 	void Start()
 	{
-		
-		button.interactable = PlayerPrefs.HasKey("Player z");
-
+		splash = GameObject.FindGameObjectWithTag("SplashAudio");
 	}
 
 	public void NewGame()
 	{
+		splash.GetComponent<Canvas> ().enabled = false;
+		splash.GetComponent<AudioSource> ().Stop ();
 		charging = false;
 		SceneManager.LoadScene ("LevelScene");
 	}

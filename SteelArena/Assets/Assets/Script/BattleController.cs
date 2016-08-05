@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace DigitalRuby.PyroParticles
 {
@@ -10,14 +11,33 @@ public class BattleController : MonoBehaviour
 		private GameObject[] flamethrowerList = new GameObject[4];
 		private bool enabled;
 		private bool combatFinished;
+		private GameObject instructionsCanvas;
+		private GameObject numberCounterInitBattle;
+		private GameObject[] robotBars = new GameObject[1];
+		int i;
+
 
 	// Use this for initialization
-	void Start () 
+		void Start () 
 		{			
-				
-				flamethrowerList = GameObject.FindGameObjectsWithTag ("Flame");
-				StartCoroutine (FlameTimer ());
+			instructionsCanvas = GameObject.FindGameObjectWithTag ("Instructions");
+			numberCounterInitBattle = GameObject.FindGameObjectWithTag ("NumberCounter");
+			robotBars = GameObject.FindGameObjectsWithTag ("RobotBars");
+			flamethrowerList = GameObject.FindGameObjectsWithTag ("Flame");
+			StartCoroutine (FlameTimer ());	
+		}
 
+		public void AfterAreYouReadyButtonIsPressed()
+		{
+			instructionsCanvas.SetActive (false);
+			numberCounterInitBattle.GetComponent<Image> ().enabled = true;
+			numberCounterInitBattle.GetComponent<Animator> ().enabled = true;
+
+			for (i = 0; i <= robotBars.Length-1; i++) 
+			{
+				robotBars [i].GetComponent<Canvas> ().enabled = true;
+				Debug.Log (i);
+			}
 		}
 
 

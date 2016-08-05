@@ -5,10 +5,12 @@ public class CountdownController : MonoBehaviour {
 
 
 	public bool counterDownDone = false;
+	private GameObject cityAudio;
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start () 
+	{
+		cityAudio = GameObject.FindGameObjectWithTag ("CityAudio");
 	}
 	
 	// Update is called once per frame
@@ -23,6 +25,7 @@ public class CountdownController : MonoBehaviour {
 	private void Pause()
 	{		
 		Time.timeScale = 0;
+		cityAudio.GetComponent<AudioSource> ().Play ();
 	}
 
 
