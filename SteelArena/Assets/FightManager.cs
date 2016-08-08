@@ -3,7 +3,8 @@ using System.Collections;
 
 public class FightManager : MonoBehaviour {
 
-	GameObject game;
+	GameObject wrapper;
+	GameObject mech;
 	private bool hasAnimator;
 	Animator animator;
 	// Use this for initialization
@@ -12,10 +13,13 @@ public class FightManager : MonoBehaviour {
 	
 
 		if (!hasAnimator) {
-			game = GameObject.Find ("testerino");
-			game.transform.position = Vector3.zero;
-			animator = game.GetComponent<Animator> ();
+		/*/	mech = GameObject.Find ("testerino");
+			mech.transform.position = Vector3.zero;
+			animator = mech.GetComponent<Animator> ();
 			hasAnimator = true;
+			wrapper = GameObject.Find ("MechWrapper");
+			mech.transform.parent = wrapper.transform;
+		*/
 		}
 
 

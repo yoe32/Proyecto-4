@@ -9,8 +9,8 @@ public class ChangeScenes : MonoBehaviour {
 
 	void Start()
 	{		
-		splash = GameObject.FindGameObjectWithTag("SplashAudio");
-		levelAudio = GameObject.FindGameObjectWithTag ("LevelAudio");
+//		splash = GameObject.FindGameObjectWithTag("SplashAudio");
+		//levelAudio = GameObject.FindGameObjectWithTag ("LevelAudio");
 	}
 
 	public void LoadMainMenu()

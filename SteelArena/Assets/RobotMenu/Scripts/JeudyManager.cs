@@ -9,7 +9,7 @@ using DigitalRuby.PyroParticles;
 /// comentario
 
 
-public class MechManager : MonoBehaviour
+public class JuedyManager : MonoBehaviour
 {
 	public List<MechPrefab> mechParts; //= new List<MechPrefab>();
 
@@ -17,12 +17,12 @@ public class MechManager : MonoBehaviour
 	private MechSize _mechSize = MechSize.Light;
 
 	private int _currentPrefab = 0;
-	public int  _currentMount = 0;
+	private int _currentMount = 0;
 	private bool firstTime = true;
 	private bool fixedCam = false;
 	bool isLocked = false;
 	Animator animator;
-	MechManager miniManager;
+	JuedyManager miniManager;
 
 	private Vector3 curNormal = Vector3.up; // smoothed terrain normal
 	private Quaternion iniRot; // initial rotation
@@ -61,12 +61,12 @@ public class MechManager : MonoBehaviour
 	public List<MechPrefab> PrefabList { get { return _prefabList; } }
 
 	public void UpdateGui()
-	{
+	{	
 		//Debug.Log("Update your GUI here");
 	}
 
 	void Start(){
-	//	Camera.main.transform.Rotate (35,0,0);
+		//	Camera.main.transform.Rotate (35,0,0);
 		///cameraPos =   new Vector3(50,30,10);
 	}
 
@@ -86,29 +86,10 @@ public class MechManager : MonoBehaviour
 			animator.SetFloat ("Horizontal", inputH);
 			animator.SetFloat ("Vertical"  , inputV);
 
-			if (!firstTime) {
-
-				if (!fixedCam) {	
-					
-					cameraPos.x = rootGo.transform.position.x ;
-					cameraPos.y = rootGo.transform.position.y ;
-					cameraPos.z = rootGo.transform.position.z ;
-				//	Camera.main.transform.position = Vector3.zero;
-					Camera.main.transform.parent = rootGo.transform;
-				//	Camera.main.transform.position = rootGo.transform.position;
-					Camera.main.transform.position = new Vector3(0,10,-10);
-					//Camera.main.transform.position = new Vector3(0, 15, -20);
-					Camera.main.transform.Rotate (20,0,0);
 
 
-					fixedCam = true;
-				}
-				Camera.main.transform.parent = rootGo.transform;
 
-				//rootGo.GetComponent<Rigidbody> ().AddForce ();
-				//rootGo.transform.position += Vector3.up;
 
-			}
 
 		}
 
@@ -120,7 +101,7 @@ public class MechManager : MonoBehaviour
 			animator.SetBool ("isRolling", true);
 			animator.Play ("Transform_to_Roller", -1, 0f);
 		}
-	
+
 
 	}
 
@@ -167,7 +148,7 @@ public class MechManager : MonoBehaviour
 					foreach(MechPrefab grandChild in grandChildren)
 					{
 
-					
+
 						RemovePart(grandChild);
 					}
 
@@ -205,7 +186,7 @@ public class MechManager : MonoBehaviour
 			rootGo.AddComponent(script);
 /*/
 
-			}
+		}
 
 
 		if(_prefabList.Count > 0)
@@ -232,9 +213,9 @@ public class MechManager : MonoBehaviour
 			_currentMount = 0;
 
 			if(!isLocked)
-			_currentPrefab = _prefabList.Count - 1;
+				_currentPrefab = _prefabList.Count - 1;
 
-		
+
 		}
 	}
 
@@ -283,7 +264,7 @@ public class MechManager : MonoBehaviour
 					(part.mountableOn.Contains(CurrentPart.mountType) || part.mountableOn.Count == 0) &&
 					(mount.mountTypes.Contains(part.mountType) || (part.isWeapon && mount.allowsWeapon)))
 				{*/
-					parts.Add(part);
+				parts.Add(part);
 				//}
 			}
 		}
@@ -315,7 +296,7 @@ public class MechManager : MonoBehaviour
 	public void printOrder(){
 
 		foreach (MechPrefab prefab in _prefabList) {
-		//	Debug.Log (" EL NOMBRE ES  " + prefab.gameObject.name + " El parent es " + prefab.gameObject.transform.parent +  " y su mount es " + prefab );
+			//	Debug.Log (" EL NOMBRE ES  " + prefab.gameObject.name + " El parent es " + prefab.gameObject.transform.parent +  " y su mount es " + prefab );
 
 			MechPrefab[] grandChildren = prefab.GetComponentsInChildren<MechPrefab>();
 			foreach(MechPrefab grandChild in grandChildren)
@@ -336,14 +317,14 @@ public class MechManager : MonoBehaviour
 			if (miniManager == null) {
 				GameObject x;
 				x = GameObject.Find ("CopyCat");
-				x.AddComponent<MechManager> ();
-				miniManager = x.GetComponent<MechManager> ();
+				x.AddComponent<JuedyManager> ();
+				miniManager = x.GetComponent<JuedyManager> ();
 				Debug.Log (" Se creo el minimanager" );
 
 			}
 			//miniManager.mechParts = mechParts;
 			foreach (MechPrefab x in mechParts) {
-//				manager.mechParts.Add (x);
+				//				manager.mechParts.Add (x);
 			}
 			Debug.Log ("antes" + miniManager.rootGo);
 			miniManager.SpawnPart(GetMechPart(test.gameObject.transform.name));
@@ -394,69 +375,10 @@ public class MechManager : MonoBehaviour
 		}
 	}
 
-	
-
-	public void printMountPoint(){
-
-		List<string> mounts = new List<string>();
-
-		foreach (MechMount child in CurrentPart.mounts) {
-
-
-			Debug.Log (child.mountPoint.name);
-
-		}
-
-
-
-
-	//	return mounts;
-
-
-		/*if(CurrentPart != null)
-		if (CurrentPart.mounts.Count > 0) {
-
-			int total = CurrentPart.mounts.Count-1;
-			_currentMount++;
-
-
-			if (_currentMount > total) {
-
-				_currentMount = 0;
-
-			}
-
-
-		}/*/
-
-
-	}
-
-	public List<string> getMountPointNames(){
-
-		List<string> mounts = new List<string>();
-
-		if(CurrentPart != null)
-
-		foreach (MechMount child in CurrentPart.mounts) {
-
-
-			mounts.Add (child.mountPoint.name);
-
-		}
-
-		return mounts;
-
-	}
-
-
-
 	public void ScrollMount(){
 
-
-		
 		//MechMount mount = CurrentPart.mounts[_currentMount];
-		
+
 		if(CurrentPart != null)
 		if (CurrentPart.mounts.Count > 0) {
 
@@ -541,7 +463,7 @@ public class MechManager : MonoBehaviour
 		cameraPos.y = 1;
 		cameraPos.z = -10;
 		Camera.main.transform.parent = null;
-	//	Camera.main.transform.position = Vector3.zero;
+		//	Camera.main.transform.position = Vector3.zero;
 		firstTime = true;
 		fixedCam = false;
 
@@ -557,7 +479,7 @@ public class MechManager : MonoBehaviour
 		_currentPrefab = 0;
 		_mechSize = MechSize.Light;
 		_mechType = MechType.Biped;
-		
+
 		UpdateGui();
 	}
 
@@ -578,9 +500,9 @@ public class MechManager : MonoBehaviour
 	public void savePrefab(){
 
 
-	//	GameObject clone = PrefabUtility.CreatePrefab ("Assets/testerino.prefab", rootGo);
+		//	GameObject clone = PrefabUtility.CreatePrefab ("Assets/testerino.prefab", rootGo);
 
-	//	Instantiate(clone, new Vector3(0,0,0), Quaternion.identity);
+		//	Instantiate(clone, new Vector3(0,0,0), Quaternion.identity);
 
 	}
 
