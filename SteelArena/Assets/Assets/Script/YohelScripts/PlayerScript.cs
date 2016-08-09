@@ -52,7 +52,7 @@ public class PlayerScript : MonoBehaviour
 			moveX = 3f;
 		} 
 
-		rbody.velocity = new Vector3 (moveX, 0f, moveZ);
+ 		rbody.velocity = new Vector3 (moveX, 0f, moveZ);
 	}
 		
 	void increaseHealth(float ammount)
