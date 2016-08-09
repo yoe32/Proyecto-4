@@ -49,8 +49,6 @@ public class FinalInventory : MonoBehaviour {
 
 	}
 
-
-
 	public void deleteAll(){
 
 		foreach(GameObject item in items){
@@ -79,13 +77,7 @@ public class FinalInventory : MonoBehaviour {
 			text.text = s;
 			Debug.Log (" EL nombre es " + text);
 
-
 		}
-
-
-
-
-
 	}
 
 	public void makeAllByList(){
@@ -137,7 +129,13 @@ public class FinalInventory : MonoBehaviour {
 
 
 
-
+    public void TouchButtomItem()
+    {
+        foreach (GameObject item in items)
+        {
+            Debug.Log("Entro al numero del item " + item);
+        }
+    }
 
 
 
