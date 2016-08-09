@@ -50,6 +50,7 @@ public class ControlCanvasMain : MonoBehaviour {
         GPanelShoulders.SetActive(false);
         GPanelBackpack.SetActive(true);
     }
+
     void OnTriggerEnter(Collider col)
     {
 

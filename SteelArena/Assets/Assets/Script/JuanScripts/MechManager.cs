@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using DigitalRuby.PyroParticles;
 //using UnityEditor;
+using System;
 
 
 
@@ -218,7 +219,7 @@ public class MechManager : MonoBehaviour
 
 
 		Debug.Log ("Monto el " + go.GetComponent<MechPrefab>().name + " y su mount es " + _currentMount );
-
+		go.GetComponent<MechPrefab> ().mountedOn = _currentMount;
 		AddPart(go.GetComponent<MechPrefab>());
 		UpdateGui();
 	}
@@ -314,8 +315,10 @@ public class MechManager : MonoBehaviour
 
 	public void printOrder(){
 
+		//FindChildRecursive (rootGo.transform);
+		string receta = "";
 		foreach (MechPrefab prefab in _prefabList) {
-		//	Debug.Log (" EL NOMBRE ES  " + prefab.gameObject.name + " El parent es " + prefab.gameObject.transform.parent +  " y su mount es " + prefab );
+			Debug.Log (" EL NOMBRE ES  " + prefab.gameObject.name + " El mount es " + prefab.gameObject.transform.parent +  " y su mount es " + prefab );
 
 			MechPrefab[] grandChildren = prefab.GetComponentsInChildren<MechPrefab>();
 			foreach(MechPrefab grandChild in grandChildren)
@@ -324,13 +327,14 @@ public class MechManager : MonoBehaviour
 			}
 			//List<MechPrefab> c = GetParts();
 
+		//	Debug.Log (" el que encontro es " + test);
 
-			MechPrefab test = getMechPart(prefab.gameObject.name);
-
-			GameObject go = Instantiate(test.gameObject);
+			MechPrefab test = getMechPart (prefab.gameObject.name);
 
 
-			Debug.Log (" el que encontro es " + test);
+
+
+
 
 
 			if (miniManager == null) {
@@ -338,98 +342,24 @@ public class MechManager : MonoBehaviour
 				x = GameObject.Find ("CopyCat");
 				x.AddComponent<MechManager> ();
 				miniManager = x.GetComponent<MechManager> ();
-				Debug.Log (" Se creo el minimanager" );
+				//Debug.Log (" Se creo el minimanager" );
 
 			}
 			//miniManager.mechParts = mechParts;
 			foreach (MechPrefab x in mechParts) {
 //				manager.mechParts.Add (x);
 			}
-			Debug.Log ("antes" + miniManager.rootGo);
-			miniManager.SpawnPart(GetMechPart(test.gameObject.transform.name));
-			Debug.Log ("despues" + miniManager.rootGo);
-
-			/*
-
-
 		
 
 
+			//miniManager.SpawnPart(GetMechPart(test.gameObject.transform.name), prefab.mountedOn);
+
+
+			receta += test.gameObject.transform.name + "," + prefab.mountedOn + "|";
 		}
 
-
-
-
-		if(_prefabList.Count > 0)
-		{
-			for(int x = 0 ;  x < _prefabList.Count  ;  x++)
-
-				foreach(Transform child in _prefabList[x].transform)
-			{
-				MechPrefab oldPrefab = child.GetComponent<MechPrefab>();
-
-				
-				
-					
-				if(oldPrefab)
-				{
-						
-					Debug.Log (" EL NOMBRE ES  "  + child.gameObject.name);
-
-					MechPrefab[] grandChildren = oldPrefab.GetComponentsInChildren<MechPrefab>();
-
-					foreach(MechPrefab grandChild in grandChildren)
-					{
-
-
-						//RemovePart(grandChild);
-					}
-
-					//RemovePart(oldPrefab);
-					//Destroy(child.gameObject);
-				}
-			}
-		}
-/*/
-		}
-	}
-
-	
-
-	public void printMountPoint(){
-
-		List<string> mounts = new List<string>();
-
-		foreach (MechMount child in CurrentPart.mounts) {
-
-
-			Debug.Log (child.mountPoint.name);
-
-		}
-
-
-
-
-	//	return mounts;
-
-
-		/*if(CurrentPart != null)
-		if (CurrentPart.mounts.Count > 0) {
-
-			int total = CurrentPart.mounts.Count-1;
-			_currentMount++;
-
-
-			if (_currentMount > total) {
-
-				_currentMount = 0;
-
-			}
-
-
-		}/*/
-
-
+		PlayerPrefs.SetString("robotRecipe", receta);
+		Debug.Log (receta);
 	}
 
 	public List<string> getMountPointNames(){
@@ -439,7 +369,7 @@ public class MechManager : MonoBehaviour
 		if(CurrentPart != null)
 
 		foreach (MechMount child in CurrentPart.mounts) {
-
+	
 
 			mounts.Add (child.mountPoint.name);
 
@@ -447,6 +377,56 @@ public class MechManager : MonoBehaviour
 
 		return mounts;
 
+	}
+
+	public void makeFromMemory(){
+
+		string recipe = PlayerPrefs.GetString("robotRecipe");
+
+		string[] parts = recipe.Split('|');
+
+		foreach (string s in parts) {
+
+
+			if (s.Length > 0) {
+				string[] subparts = s.Split (',');
+
+
+				Debug.Log (s);
+
+				SpawnPart (GetMechPart (subparts [0]), Int32.Parse (subparts [1]));
+
+
+			}
+		}
+
+
+
+	}
+
+
+	public static Transform FindChildRecursive(Transform root) {
+
+
+		if (root != null) {
+			Debug.Log (root.name);
+
+
+			Transform child = null;
+			foreach (Transform t in root.GetComponentsInChildren<Transform>()) {
+				if (t != null)
+				if (t.childCount > 0) {
+					//child = FindChildRecursive (t);
+
+				}
+				return null;
+			}
+
+			return null;
+
+
+		} else
+			return null;
 	}
 
 
@@ -587,11 +567,62 @@ public class MechManager : MonoBehaviour
 
 
 
-	public void printWeapons(){
+	public void SpawnPart(MechPrefab prefab, int mount)
+	{
+
+		Debug.Log (" EL INT QUE LLEGO ES  " + mount);
+
+		int amount = 0;
+
+		if(_prefabList.Count > 0)
+		{
+			foreach(Transform child in _prefabList[_currentPrefab].mounts[mount].mountPoint)
+			{
+				MechPrefab oldPrefab = child.GetComponent<MechPrefab>();
 
 
+				if(oldPrefab)
+				{
+					MechPrefab[] grandChildren = oldPrefab.GetComponentsInChildren<MechPrefab>();
+
+					foreach(MechPrefab grandChild in grandChildren)
+					{
 
 
+						RemovePart(grandChild);
+					}
+
+					RemovePart(oldPrefab);
+					Destroy(child.gameObject);
+				}
+			}
+		}
+
+		GameObject go = (GameObject)Instantiate(prefab.gameObject, new Vector3(0,0,0), Quaternion.identity);
+		//go.transform.localScale += new Vector3 (1, 1, 1);
+
+		if (firstTime) {
+			firstTime = false;
+
+			animator = go.GetComponent<Animator> ();
+			rootGo = go;
+
+
+		}
+
+
+		if(_prefabList.Count > 0)
+		{
+			go.transform.parent = _prefabList[_currentPrefab].mounts[mount].mountPoint;
+			go.transform.localPosition = Vector3.zero;
+			go.transform.localRotation = Quaternion.identity;
+			go.transform.localScale = new Vector3(1, 1, 1);
+		}
+
+
+		Debug.Log ("Monto el " + go.GetComponent<MechPrefab>().name + " y su mount es " + _currentMount );
+		go.GetComponent<MechPrefab> ().mountedOn = _currentMount;
+		AddPart(go.GetComponent<MechPrefab>());
+		UpdateGui();
 	}
-
 }

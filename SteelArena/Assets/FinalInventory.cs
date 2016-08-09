@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿	using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -49,8 +49,6 @@ public class FinalInventory : MonoBehaviour {
 
 	}
 
-
-
 	public void deleteAll(){
 
 		foreach(GameObject item in items){
@@ -69,7 +67,7 @@ public class FinalInventory : MonoBehaviour {
 			GameObject x = Instantiate(mechItem);
 			x.transform.SetParent(gameObject.transform);
 			x.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-			x.transform.position = Vector3.zero;
+			x.transform.localPosition = new Vector3 (0, 0, 174);
 			x.transform.rotation = gameObject.transform.rotation;
 			Text text = (x.GetComponentInChildren<Text>());
 
@@ -79,13 +77,7 @@ public class FinalInventory : MonoBehaviour {
 			text.text = s;
 			Debug.Log (" EL nombre es " + text);
 
-
 		}
-
-
-
-
-
 	}
 
 	public void makeAllByList(){
@@ -94,6 +86,8 @@ public class FinalInventory : MonoBehaviour {
 
 
 		List<string> names = manager.getMountPointNames ();
+
+		Debug.Log (names.Count);
 		int position = 0;
 
 		for (int y = 0; y < names.Count ; y++){
@@ -137,7 +131,13 @@ public class FinalInventory : MonoBehaviour {
 
 
 
-
+    public void TouchButtomItem()
+    {
+        foreach (GameObject item in items)
+        {
+            Debug.Log("Entro al numero del item " + item);
+        }
+    }
 
 
 
