@@ -12,10 +12,13 @@ public class FinalInventory : MonoBehaviour {
 	public Transform targetTransform;
 	public List<string> mountNames;
 	public GameObject mechItem;
-	public List<GameObject> items;
+    public List<GameObject> items;
+    public ControlCanvasMain CanvasMain;
+    public bool vandera = true;
+    string namePoint;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 
 
 		manager = GameObject.Find ("Manager").GetComponent<MechManager> ();
@@ -82,13 +85,14 @@ public class FinalInventory : MonoBehaviour {
 
 	public void makeAllByList(){
 
-		deleteAll ();
+		//deleteAll ();
 
 
 		List<string> names = manager.getMountPointNames ();
 
 		Debug.Log (names.Count);
-		int position = 0;
+        Debug.Log(names);
+        int position = 0;
 
 		for (int y = 0; y < names.Count ; y++){
 
@@ -107,10 +111,16 @@ public class FinalInventory : MonoBehaviour {
 
 			x.GetComponentInChildren<Button> ().onClick.AddListener(() =>
 				{
-					manager._currentMount = Int32.Parse(x.transform.name);
-
+                    Button buttonPoint = x.GetComponentInChildren<Button>();
+                    Text namePoint = (buttonPoint.GetComponentInChildren<Text>());
+                    Debug.Log(namePoint.text);
+                    manager._currentMount = Int32.Parse(x.transform.name);
 					Debug.Log(" El current mountpoint es "  + manager._currentMount);
-				});
+                    string m = namePoint.text;
+
+                    CanvasMain.TouchButtomItem(m);
+
+                });
 
 			position++;
 
@@ -131,14 +141,6 @@ public class FinalInventory : MonoBehaviour {
 
 
 
-    public void TouchButtomItem()
-    {
-        foreach (GameObject item in items)
-        {
-            Debug.Log("Entro al numero del item " + item);
-        }
-    }
-
-
+  
 
 }

@@ -7,6 +7,7 @@ public class ControlCanvasMain : MonoBehaviour {
     public GameObject GPanelCockpit;
     public GameObject GPanelShoulders;
     public GameObject GPanelBackpack;
+    public GameObject GPanelGun;
     GameObject[] TagGlowingKey;
     public bool isTrigger = false;
     public bool vandera = true;
@@ -16,6 +17,7 @@ public class ControlCanvasMain : MonoBehaviour {
         GPanelCockpit.SetActive(false);
         GPanelShoulders.SetActive(false);
         GPanelBackpack.SetActive(false);
+        GPanelGun.SetActive(false);
     }
 	
 	// Update is called once per frame
@@ -27,28 +29,43 @@ public class ControlCanvasMain : MonoBehaviour {
         }
 	}
 
-    public void GPanelCockpitActve()
+    public void TouchButtomItem(string point)
     {
-        vandera = false;
-        GPanelCockpit.SetActive(true);
-        GPanelShoulders.SetActive(false);
-        GPanelBackpack.SetActive(false);
-    }
-
-    public void GPanelShouldersActve()
-    {
-        vandera = false;
-        GPanelCockpit.SetActive(false);
-        GPanelShoulders.SetActive(true);
-        GPanelBackpack.SetActive(false);
-    }
-
-    public void GPanelBackpackActve()
-    {
-        vandera = false;
-        GPanelCockpit.SetActive(false);
-        GPanelShoulders.SetActive(false);
-        GPanelBackpack.SetActive(true);
+        if(point == "Mount_cockpit" || point == "Mount_Weapon_top" || point == "Mount_Weapon_Main"
+            || point == "Top")
+        {
+            vandera = false;
+            GPanelCockpit.SetActive(false);
+            GPanelShoulders.SetActive(true);
+            GPanelBackpack.SetActive(false);
+            GPanelGun.SetActive(false);
+        }
+        //else if(point == "Mount_backpack" && point == "Mount_Backpack")
+        //{
+        //    vandera = false;
+        //    GPanelCockpit.SetActive(false);
+        //    GPanelShoulders.SetActive(true);
+        //    GPanelBackpack.SetActive(false);
+        //    GPanelGun.SetActive(false);
+        //}
+        else if(point == "Mount_backpack" || point == "Mount_Backpack")
+        {
+            vandera = false;
+            GPanelCockpit.SetActive(false);
+            GPanelShoulders.SetActive(false);
+            GPanelBackpack.SetActive(true);
+            GPanelGun.SetActive(false);
+        }
+        else if (point == "Mount_Weapon_L" || point == "Mount_Weapon_R" || point == "Mount_Shoulder_rockets_lvl2_L"
+            || point == "Mount_Shoulder_rockets_lvl2_R" || point == "Mount_Shoulder_rockets_lvl1_L"
+            || point == "Mount_Shoulder_rockets_lvl1_R")
+        {
+            vandera = false;
+            GPanelCockpit.SetActive(false);
+            GPanelShoulders.SetActive(false);
+            GPanelBackpack.SetActive(false);
+            GPanelGun.SetActive(true);
+        }
     }
 
     void OnTriggerEnter(Collider col)
