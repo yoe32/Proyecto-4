@@ -7,7 +7,7 @@ public class SetCountDown : MonoBehaviour {
 
 	public void SetCountDownNow()
 	{
-		countdownController = GameObject.FindGameObjectWithTag ("Terrain").GetComponent<CountdownController> ();
+		countdownController = GameObject.FindGameObjectWithTag ("GameController").GetComponent<CountdownController> ();
 		countdownController.counterDownDone = true;
 	}
 

@@ -44,7 +44,7 @@ public class BattleController : MonoBehaviour
 		public IEnumerator FlameTimer()
 	{		
 			
-			int randomPosition = Random.Range (0, 6);
+			int randomPosition = Random.Range (0, 5);
 			int randomCounter = Random.Range (3, 5);
 			GameObject fireClone;
 			int i = 0;
@@ -63,7 +63,7 @@ public class BattleController : MonoBehaviour
 					fireClone.GetComponent<FireBaseScript> ().Duration = 5.0f;
 					Destroy (fireClone, 7);
 
-					randomPosition = Random.Range (0, 6);
+					randomPosition = Random.Range (0, 5);
 					randomCounter = Random.Range (3, 5);
 					i = 0;
 					//combatFinished = true;

@@ -9,11 +9,11 @@ function Update ()
 
 	if(countdown <= 0.0f)
 	{
-		if(Application.loadedLevelName == "LoadingScene")
+		if(SceneManagement.SceneManager.GetActiveScene().name == "LoadingScene")
 		SceneManagement.SceneManager.LoadScene("MainScene");
-		if(Application.loadedLevelName == "LoadingBeforeBattle")
+		if(SceneManagement.SceneManager.GetActiveScene().name == "LoadingBeforeBattle")
 		SceneManagement.SceneManager.LoadScene("CityBattleScene");
-		if(Application.loadedLevelName == "LoadingAfterBattle")
+		if(SceneManagement.SceneManager.GetActiveScene().name == "LoadingAfterBattle")
 		SceneManagement.SceneManager.LoadScene("LevelScene");
 	}
 }
