@@ -94,15 +94,15 @@ public class PlayerScript : MonoBehaviour
 		setShield (calcShield);
 	}
 
-	void decreaseHealth()
+	void decreaseHealth(float ammount)
 	{
 		if (curShield > 0) 
 		{
-			decreaseShield (5);
+			decreaseShield (ammount);
 		} 
 		else 
 		{
-			curHealth -= 5f;
+			curHealth -= ammount;
 			float calcHealth = curHealth / maxStat;
 			setHealth (calcHealth);
 		}
@@ -230,6 +230,20 @@ public class PlayerScript : MonoBehaviour
 		case "L_Bonus_3":
 			{
 				Destroy(target.gameObject);
+				break;
+			}
+		
+		}
+	}
+
+	void OnTriggerExit(Collider target)
+	{
+		switch (target.tag) {
+		case "Dome":
+			{
+				decreaseShield (100);
+				decreaseEnergy (100);
+				decreaseHealth (100);
 				break;
 			}
 		}
