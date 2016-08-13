@@ -15,7 +15,9 @@ public class FinalInventory : MonoBehaviour {
     public List<GameObject> items;
     public ControlCanvasMain CanvasMain;
     public bool vandera = true;
+    bool activo;
     string namePoint;
+    GameObject[] pPanControl;
 
     // Use this for initialization
     void Start () {
@@ -91,7 +93,6 @@ public class FinalInventory : MonoBehaviour {
 		List<string> names = manager.getMountPointNames ();
 
 		Debug.Log (names.Count);
-        Debug.Log(names);
         int position = 0;
 
 		for (int y = 0; y < names.Count ; y++){
@@ -105,20 +106,21 @@ public class FinalInventory : MonoBehaviour {
 			Text text = (x.GetComponentInChildren<Text>());
 			items.Add(x);
 			text.text = names[y];
-			//x.tag = "kek";
+            //x.tag = "kek";
+            Button b = x.GetComponentInChildren<Button>();
+            //b.GetComponent<Button>().interactable = false;
+            string t = b.GetComponentInChildren<Text>().text;
+            Debug.Log(t);
 
-
-
-			x.GetComponentInChildren<Button> ().onClick.AddListener(() =>
+            x.GetComponentInChildren<Button> ().onClick.AddListener(() =>
 				{
                     Button buttonPoint = x.GetComponentInChildren<Button>();
-                    Text namePoint = (buttonPoint.GetComponentInChildren<Text>());
-                    Debug.Log(namePoint.text);
+                    String namePoint = (buttonPoint.GetComponentInChildren<Text>().text);
+                    Debug.Log(namePoint);
                     manager._currentMount = Int32.Parse(x.transform.name);
 					Debug.Log(" El current mountpoint es "  + manager._currentMount);
-                    string m = namePoint.text;
 
-                    CanvasMain.TouchButtomItem(m);
+                    CanvasMain.TouchButtomItem(namePoint);
 
                 });
 
@@ -138,9 +140,5 @@ public class FinalInventory : MonoBehaviour {
 		manager._currentMount = position;
 
 	}
-
-
-
-  
 
 }
