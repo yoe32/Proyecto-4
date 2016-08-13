@@ -5,7 +5,7 @@ namespace DigitalRuby.PyroParticles
 {
 public class EnemyAI : MonoBehaviour 
 {
-	public float patrolSpeed = 2f;                          // The nav mesh agent's speed when patrolling.
+	public float patrolSpeed = 1f;                          // The nav mesh agent's speed when patrolling.
 	public float chaseSpeed = 5f;                           // The nav mesh agent's speed when chasing.
 	public float chaseWaitTime = 5f;                        // The amount of time to wait when the last sighting is reached.
 	public float patrolWaitTime = 1f;                       // The amount of time to wait when the patrol way point is reached.
