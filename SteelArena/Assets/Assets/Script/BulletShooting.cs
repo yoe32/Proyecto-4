@@ -12,6 +12,18 @@ public class BulletShooting : MonoBehaviour
 	//Enter the Speed of the Bullet from the Component Inspector.
 	public float Bullet_Forward_Force;
 
+
+
+	 void Update(){
+
+		if(Input.GetKeyDown(KeyCode.Space)){
+			attack ();
+		}
+
+
+
+	}
+
 	public void attack()
 	{
 		//The Bullet instantiation happens here.
