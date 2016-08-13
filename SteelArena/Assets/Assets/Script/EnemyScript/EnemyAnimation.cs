@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace DigitalRuby.PyroParticles
+{
 public class EnemyAnimation : MonoBehaviour 
 {
 
-	public float deadZone = 5f;
+	public float deadZone = 5f;					// The number of degrees for which the rotation isn't controlled by Mecanim.
 
 	private Transform player;
 	private EnemySight enemySight;
@@ -31,7 +33,7 @@ public class EnemyAnimation : MonoBehaviour
 
 		// Set the weights for the shooting and gun layers to 1.
 		animator.SetLayerWeight(1, 1f);
-		animator.SetLayerWeight(2, 1f);
+		
 
 		// We need to convert the angle for the deadzone from degrees to radians.
 		deadZone *= Mathf.Deg2Rad;
@@ -40,6 +42,7 @@ public class EnemyAnimation : MonoBehaviour
 
 	void Update () 
 	{
+			this.GetComponent<Animator>().SetFloat("Speed", navMeshAgent.desiredVelocity.magnitude);
 		// Calculate the parameters that need to be passed to the animator component.
 		NavAnimSetup();
 	}
@@ -47,7 +50,12 @@ public class EnemyAnimation : MonoBehaviour
 
 	void OnAnimatorMove ()
 	{
+	
+		// Set the NavMeshAgent's velocity to the change in position since the last frame, by the time it took for the last frame.	
 		
+
+		//navMeshAgent.velocity = animator.deltaPosition / Time.deltaTime;
+
 		// The gameobject's rotation is driven by the animation's rotation.
 		transform.rotation = animator.rootRotation;
 	}
@@ -72,7 +80,6 @@ public class EnemyAnimation : MonoBehaviour
 		{
 			// Otherwise the speed is a projection of desired velocity on to the forward vector...
 			speed = Vector3.Project(navMeshAgent.desiredVelocity, transform.forward).magnitude;
-
 			// ... and the angle is the angle between forward and the desired velocity.
 			angle = FindAngle(transform.forward, navMeshAgent.desiredVelocity, transform.up);
 
@@ -111,4 +118,6 @@ public class EnemyAnimation : MonoBehaviour
 
 		return angle;
 	}
+}
+
 }

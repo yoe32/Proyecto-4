@@ -166,7 +166,7 @@ public class PlayerHealth : MonoBehaviour
 
 	void OnTriggerEnter(Collider collider)
 	{	
-
+			Debug.Log (collider.name);
 		if (collider.name == "Flamethrower(Clone)" && curShield <= 0) 
 		{
 			decreaseHealth ();

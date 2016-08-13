@@ -58,7 +58,7 @@ public class ControlCanvasMain : MonoBehaviour {
         }
         else if (point == "Mount_Weapon_L" || point == "Mount_Weapon_R" || point == "Mount_Shoulder_rockets_lvl2_L"
             || point == "Mount_Shoulder_rockets_lvl2_R" || point == "Mount_Shoulder_rockets_lvl1_L"
-            || point == "Mount_Shoulder_rockets_lvl1_R")
+            || point == "Mount_Shoulder_rockets_lvl1_R" || point == "Mount_HalfShoulder_L" || point == "Mount_HalfShoulder_R")
         {
             vandera = false;
             GPanelCockpit.SetActive(false);
