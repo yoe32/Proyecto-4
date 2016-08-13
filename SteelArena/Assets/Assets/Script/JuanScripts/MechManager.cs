@@ -17,6 +17,9 @@ public class MechManager : MonoBehaviour
 	private MechType _mechType = MechType.Biped;
 	private MechSize _mechSize = MechSize.Light;
 
+
+
+	public bool isPlaying = false;
 	private int _currentPrefab = 0;
 	public int  _currentMount = 0;
 	private bool firstTime = true;
@@ -77,14 +80,15 @@ public class MechManager : MonoBehaviour
 		///cameraPos =   new Vector3(50,30,10);
 		/// 
 		/// 
+		if (isPlaying) {
+			makeFromMemory ();
+			Debug.Log ("EL ROOT GO ES " + rootGo);
+			//rootGo.gameObject.transform.parent = GameObject.Find ("a").gameObject.transform;
+			rootGo.gameObject.transform.localPosition.Set (190, 15, 500);
+			rootGo.transform.position = new Vector3 (190, 15, 500);
+			rootGo.gameObject.transform.position.Set (190, 15, 500);
 
-		makeFromMemory ();
-		Debug.Log ("EL ROOT GO ES " + rootGo);
-		//rootGo.gameObject.transform.parent = GameObject.Find ("a").gameObject.transform;
-		rootGo.gameObject.transform.localPosition.Set(190, 15, 500);
-		rootGo.transform.position = new Vector3 (190, 15, 500);
-		rootGo.gameObject.transform.position.Set (190, 15, 500);
-
+		}
 
 
 
@@ -103,9 +107,11 @@ public class MechManager : MonoBehaviour
 	void Update () {
 
 
-			if(Input.GetKeyDown(KeyCode.Plus)){
+		if(Input.GetKeyDown(KeyCode.P)){
 
 			printOrder();
+
+
 			}
 
 
@@ -587,12 +593,13 @@ public class MechManager : MonoBehaviour
 	}
 
 
-	public void savePrefab(){
+	public void saveAndLeave(){
+
+		printOrder ();	
+		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
 
 
-	//	GameObject clone = PrefabUtility.CreatePrefab ("Assets/testerino.prefab", rootGo);
 
-	//	Instantiate(clone, new Vector3(0,0,0), Quaternion.identity);
 
 	}
 
@@ -641,15 +648,16 @@ public class MechManager : MonoBehaviour
 			animator = go.GetComponent<Animator> ();
 			rootGo = go;
 
-
-			GameObject.Find ("Canvas").GetComponentInChildren<MapCanvasController>().playerTransform = rootGo.transform;
-			PlayerScript playerScript = go.AddComponent<PlayerScript> ();
-			//playerScript.
-			playerScript.rbody = go.GetComponent<Rigidbody>();
-			playerScript.animator = animator;
-			playerScript.shieldBar = shieldBar;
-			playerScript.healthBar = healthBar;
-			playerScript.energyBar = energyBar;
+			if (isPlaying) {
+				GameObject.Find ("Canvas").GetComponentInChildren<MapCanvasController> ().playerTransform = rootGo.transform;
+				PlayerScript playerScript = go.AddComponent<PlayerScript> ();
+				//playerScript.
+				playerScript.rbody = go.GetComponent<Rigidbody> ();
+				playerScript.animator = animator;
+				playerScript.shieldBar = shieldBar;
+				playerScript.healthBar = healthBar;
+				playerScript.energyBar = energyBar;
+			}
 
 		}
 
