@@ -11,8 +11,8 @@ public class PlayerScript : MonoBehaviour
 	float curEnergy = 0f;
 	float curShield = 0f;
 	float maxStat = 100f;
-	Animator animator;
-	Rigidbody rbody;
+	public Animator animator;
+	public Rigidbody rbody;
 	float inputH;
 	float inputV;
 
@@ -129,6 +129,11 @@ public class PlayerScript : MonoBehaviour
 
 	void setEnergy(float energy)
 	{
+		Debug.Log ("el energy" + energy);
+		Debug.Log ("el bar" + energyBar);
+
+
+
 		energyBar.fillAmount = energy;
 	}
 
