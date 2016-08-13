@@ -63,11 +63,7 @@ public class PlayerMovement : MonoBehaviour
 	void attack()
 	{		
 		int i;
-		Debug.Log (bulletShooting.Length);
-		Debug.Log (bulletShooting[0]);
-		Debug.Log (bulletShooting[1]);
-		Debug.Log (bulletShooting[2]);
-		for(i = 0; i < bulletShooting.Length - 1; i++)
+		for(i = 0; i < bulletShooting.Length; i++)
 			bulletShooting[i].GetComponent<BulletShooting>().attack();
 			
 		}
