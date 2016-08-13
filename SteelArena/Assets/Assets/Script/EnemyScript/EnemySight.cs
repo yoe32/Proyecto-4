@@ -67,15 +67,16 @@ public class EnemySight : MonoBehaviour
 			Vector3 direction = other.transform.position - transform.position;
 			float angle = Vector3.Angle (direction, transform.forward);
 
+				//Debug.Log ("angle: " + angle);
+				Debug.Log ("fieldOfViewAngle: " + fieldOfViewAngle * 0.5f);
 				// If the angle between forward and where the player is, is less than half the angle of view...
 			if (angle < fieldOfViewAngle * 0.5f) 
-			{
+				{					
 				RaycastHit hit;
 
 					// ... and if a raycast towards the player hits something...
 				if(Physics.Raycast(transform.position + transform.up, direction.normalized, out hit, sphereCollider.radius))
-				{
-						// ... and if the raycast hits the player...
+				{										
 					if(hit.collider.gameObject == player)
 					{
 							// ... the player is in sight.
