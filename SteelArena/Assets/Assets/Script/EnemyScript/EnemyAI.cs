@@ -13,7 +13,7 @@ public class EnemyAI : MonoBehaviour
 
 
 	private EnemySight enemySight;                          // Reference to the EnemySight script.
-	private NavMeshAgent nav;                               // Reference to the nav mesh agent.
+	private NavMeshAgent navMeshAgent;                               // Reference to the nav mesh agent.
 	private Transform player;                               // Reference to the player's transform.
 	private PlayerHealth playerHealth;                      // Reference to the PlayerHealth script.
 	private LastPlayerSighting lastPlayerSighting;          // Reference to the last global sighting of the player.
@@ -26,7 +26,7 @@ public class EnemyAI : MonoBehaviour
 	{
 		// Setting up the references.
 		enemySight = GetComponent<EnemySight>();
-		nav = GetComponent<NavMeshAgent>();
+			navMeshAgent = GetComponent<NavMeshAgent>();
 		player = GameObject.FindGameObjectWithTag(Tags.player).transform;
 		playerHealth = player.GetComponent<PlayerHealth>();
 		lastPlayerSighting = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent<LastPlayerSighting>();
@@ -55,7 +55,7 @@ public class EnemyAI : MonoBehaviour
 	void Shooting ()
 	{
 		// Stop the enemy where it is.
-		nav.Stop();
+			navMeshAgent.Stop();
 	}
 
 
@@ -67,13 +67,13 @@ public class EnemyAI : MonoBehaviour
 		// If the the last personal sighting of the player is not close...
 		if(sightingDeltaPos.sqrMagnitude > 4f)
 			// ... set the destination for the NavMeshAgent to the last personal sighting of the player.
-			nav.destination = enemySight.personalLastSighting;
+				navMeshAgent.destination = enemySight.personalLastSighting;
 
 		// Set the appropriate speed for the NavMeshAgent.
-		nav.speed = chaseSpeed;
+			navMeshAgent.speed = chaseSpeed;
 
 		// If near the last personal sighting...
-		if(nav.remainingDistance < nav.stoppingDistance)
+			if(navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
 		{
 			// ... increment the timer.
 			chaseTimer += Time.deltaTime;
@@ -96,10 +96,10 @@ public class EnemyAI : MonoBehaviour
 	void Patrolling ()
 	{
 		// Set an appropriate speed for the NavMeshAgent.
-		nav.speed = patrolSpeed;
+			navMeshAgent.speed = patrolSpeed;
 
 		// If near the next waypoint or there is no destination...
-		if(nav.destination == lastPlayerSighting.resetPosition || nav.remainingDistance < nav.stoppingDistance)
+			if(navMeshAgent.destination == lastPlayerSighting.resetPosition || navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance)
 		{
 			// ... increment the timer.
 			patrolTimer += Time.deltaTime;
@@ -122,7 +122,7 @@ public class EnemyAI : MonoBehaviour
 			patrolTimer = 0;
 
 		// Set the destination to the patrolWayPoint.
-		nav.destination = patrolWayPoints[wayPointIndex].position;
+			navMeshAgent.destination = patrolWayPoints[wayPointIndex].position;
 	}
 }
 

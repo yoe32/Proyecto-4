@@ -119,7 +119,10 @@ public class MapCanvasController : MonoBehaviour
         if (!playerTransform)
         {
             Debug.LogError("You must specify the player transform");
-        }
+
+		//	playerTransform = GameObject.Find ("Hvy root(Clone)").transform	;
+
+        }	
 
         mapRect = GetComponent<RectTransform>();
 

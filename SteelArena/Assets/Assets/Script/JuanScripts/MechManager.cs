@@ -17,6 +17,9 @@ public class MechManager : MonoBehaviour
 	private MechType _mechType = MechType.Biped;
 	private MechSize _mechSize = MechSize.Light;
 
+
+
+	public bool isPlaying = false;
 	private int _currentPrefab = 0;
 	public int  _currentMount = 0;
 	private bool firstTime = true;
@@ -39,6 +42,7 @@ public class MechManager : MonoBehaviour
 
 	Vector3 cameraPos;
 
+	public Image healthBar, energyBar, shieldBar;
 
 	public MechPrefab CurrentPart
 	{
@@ -66,13 +70,50 @@ public class MechManager : MonoBehaviour
 		//Debug.Log("Update your GUI here");
 	}
 
+
+
+
+
+
 	void Start(){
 	//	Camera.main.transform.Rotate (35,0,0);
 		///cameraPos =   new Vector3(50,30,10);
-	}
+		/// 
+		/// 
+		if (isPlaying) {
+			makeFromMemory ();
+			Debug.Log ("EL ROOT GO ES " + rootGo);
+			//rootGo.gameObject.transform.parent = GameObject.Find ("a").gameObject.transform;
+			rootGo.gameObject.transform.localPosition.Set (190, 15, 500);
+			rootGo.transform.position = new Vector3 (190, 15, 500);
+			rootGo.gameObject.transform.position.Set (190, 15, 500);
+
+		}
+
+
+
+		/*prin
+		Camera.main.transform.parent = rootGo.transform;
+		//	Camera.main.transform.position = rootGo.transform.position;
+		Camera.main.transform.position = new Vector3(0,10,-10);
+		//Camera.main.transform.position = new Vector3(0, 15, -20);
+		Camera.main.transform.Rotate (20,0,0);
+		Camera.main.transform.parent = rootGo.transform;
+
+/*/
+			}
 
 
 	void Update () {
+
+
+		if(Input.GetKeyDown(KeyCode.P)){
+
+			printOrder();
+
+
+			}
+
 
 
 		float inputH     = 	Input.GetAxis ("Horizontal");
@@ -90,14 +131,11 @@ public class MechManager : MonoBehaviour
 			if (!firstTime) {
 
 				if (!fixedCam) {	
-					
-					cameraPos.x = rootGo.transform.position.x ;
-					cameraPos.y = rootGo.transform.position.y ;
-					cameraPos.z = rootGo.transform.position.z ;
+
 				//	Camera.main.transform.position = Vector3.zero;
 					Camera.main.transform.parent = rootGo.transform;
 				//	Camera.main.transform.position = rootGo.transform.position;
-					Camera.main.transform.position = new Vector3(0,10,-10);
+					Camera.main.transform.localPosition = new Vector3(0,10,-10);
 					//Camera.main.transform.position = new Vector3(0, 15, -20);
 					Camera.main.transform.Rotate (20,0,0);
 
@@ -305,7 +343,7 @@ public class MechManager : MonoBehaviour
 			Debug.Log (b);
 			Debug.Log (a.Equals(b));
 			*/
-			if (a.Equals (b))
+			if (a.Equals(b))
 				return prefab;
 		}
 		return mech;
@@ -329,13 +367,13 @@ public class MechManager : MonoBehaviour
 
 		//	Debug.Log (" el que encontro es " + test);
 
-			MechPrefab test = getMechPart (prefab.gameObject.name);
+			MechPrefab test = getMechPart(prefab.gameObject.name);
 
 
 
 
 
-
+			/*
 
 			if (miniManager == null) {
 				GameObject x;
@@ -344,7 +382,7 @@ public class MechManager : MonoBehaviour
 				miniManager = x.GetComponent<MechManager> ();
 				//Debug.Log (" Se creo el minimanager" );
 
-			}
+			}*/
 			//miniManager.mechParts = mechParts;
 			foreach (MechPrefab x in mechParts) {
 //				manager.mechParts.Add (x);
@@ -555,14 +593,18 @@ public class MechManager : MonoBehaviour
 	}
 
 
-	public void savePrefab(){
+	public void saveAndLeave(){
+
+		printOrder ();	
+		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
 
 
-	//	GameObject clone = PrefabUtility.CreatePrefab ("Assets/testerino.prefab", rootGo);
 
-	//	Instantiate(clone, new Vector3(0,0,0), Quaternion.identity);
 
 	}
+
+
+
 
 
 
@@ -603,10 +645,19 @@ public class MechManager : MonoBehaviour
 
 		if (firstTime) {
 			firstTime = false;
-
 			animator = go.GetComponent<Animator> ();
 			rootGo = go;
 
+			if (isPlaying) {
+				GameObject.Find ("Canvas").GetComponentInChildren<MapCanvasController> ().playerTransform = rootGo.transform;
+				PlayerScript playerScript = go.AddComponent<PlayerScript> ();
+				//playerScript.
+				playerScript.rbody = go.GetComponent<Rigidbody> ();
+				playerScript.animator = animator;
+				playerScript.shieldBar = shieldBar;
+				playerScript.healthBar = healthBar;
+				playerScript.energyBar = energyBar;
+			}
 
 		}
 
