@@ -12,39 +12,44 @@ public class EnemyShooting : MonoBehaviour
 	private SphereCollider sphereCollider;                         // Reference to the sphere collider.
 	private Transform player;                           // Reference to the player's transform.
 	private PlayerHealth playerHealth;                  // Reference to the player's health.
-	private bool shooting;                              // A bool to say whether or not the enemy is currently shooting.
-	private GameObject bulletShooting;
+	private bool shooting;      
+	private NavMeshAgent navMeshAgent; 
+	private GameObject[] bulletShooting;					// A bool to say whether or not the enemy is currently shooting.
 
 	void Awake ()
 	{
 		// Setting up the references.
-			animator = GetComponent<Animator>();		
-			sphereCollider = GetComponent<SphereCollider>();
+		animator = GetComponent<Animator>();		
+		sphereCollider = GetComponent<SphereCollider>();
 		player = GameObject.FindGameObjectWithTag(Tags.player).transform;
 		playerHealth = player.gameObject.GetComponent<PlayerHealth>();
 		hash = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent<HashIDs>();
-		bulletShooting = GameObject.FindGameObjectWithTag("Bullet");
+		bulletShooting = GameObject.FindGameObjectsWithTag("EnemyBullet");
+		navMeshAgent = GetComponent<NavMeshAgent>();
 	}
 
 
 	void Update ()
 	{
+
+			Debug.Log ("shooting: " + shooting);
 		// Cache the current value of the shot curve.
 			float shot = animator.GetFloat(hash.shotFloat);
 
 		// If the shot curve is peaking and the enemy is not currently shooting...
-		if(shot > 0.5f && !shooting)
-			// ... shoot
-				bulletShooting.GetComponent<BulletShooting>().attack();
-
+			if (shot > 0.5f && !shooting) 
+			{
+				// ... shoot
+				Shoot ();
+			}
 		// If the shot curve is no longer peaking...
 		if(shot < 0.5f)
-		{
+			{
+				
 			// ... the enemy is no longer shooting 
 			shooting = false;
 			
-		}
-					
+			}
 	}
 
 
@@ -63,11 +68,18 @@ public class EnemyShooting : MonoBehaviour
 
 	void Shoot ()
 	{
+		
+			int i;
+
 		// The enemy is shooting.
 		shooting = true;
 		
-		//Instantiate Bullet
-		bulletShooting.GetComponent<BulletShooting>().attack();
+			for (i = 0; i < bulletShooting.Length; i++) 
+			{
+				//Instantiate Bullet
+				bulletShooting[i].GetComponent<BulletShooting>().attack();
+			}
+		
 
 		// The fractional distance from the player, 1 is next to the player, 0 is the player is at the extent of the sphere collider.
 			float fractionalDistance = (sphereCollider.radius - Vector3.Distance(transform.position, player.position)) / sphereCollider.radius;
