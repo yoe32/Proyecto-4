@@ -107,16 +107,17 @@ public class EnemyAnimation : MonoBehaviour
 
 		// Create a float to store the angle between the facing of the enemy and the direction it's travelling.
 		float angle = Vector3.Angle(fromVector, toVector);
-			Debug.Log ("from enemy to player: " + angle);
+			Debug.Log ("angle from enemy to player: " + angle);
 		// Find the cross product of the two vectors (this will point up if the velocity is to the right of forward).
 		Vector3 normal = Vector3.Cross(fromVector, toVector);
-
+			Debug.Log ("cross product: " + normal);
 		// The dot product of the normal with the upVector will be positive if they point in the same direction.
 		angle *= Mathf.Sign(Vector3.Dot(normal, upVector));
-
+			Debug.Log ("dot product: " + angle);
 		// We need to convert the angle we've found from degrees to radians.
 		angle *= Mathf.Deg2Rad;
-
+			Debug.Log ("from degrees to radians: " + angle);
+			Debug.Log ("----------------------------");
 		return angle;
 	}
 }
