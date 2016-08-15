@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CountdownController : MonoBehaviour {
-
-
-	public bool counterDownDone = false;
+public class CountdownController : MonoBehaviour 
+{
+	public bool counterDownDone;
 	private GameObject cityAudio;
 
 	// Use this for initialization
 	void Start () 
 	{
+		counterDownDone = false;
 		cityAudio = GameObject.FindGameObjectWithTag ("CityAudio");
 	}
 	

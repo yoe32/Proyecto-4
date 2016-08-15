@@ -124,7 +124,7 @@ public class EnemySight : MonoBehaviour
 
 		if (navMeshAgent.enabled)
 			navMeshAgent.CalculatePath (targetPosition, path);
-			Debug.Log (path.corners.Length);
+			
 			// Create an array of points which is the length of the number of corners in the path + 2.
 		Vector3[] allWayPoints = new Vector3[path.corners.Length + 2];
 

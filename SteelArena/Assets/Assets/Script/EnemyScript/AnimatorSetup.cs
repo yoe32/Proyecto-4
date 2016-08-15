@@ -21,7 +21,9 @@ public class AnimatorSetup
 	{
 		// Angular speed is the number of degrees per second.
 		float angularSpeed = angle / angleResponseTime;
-
+		//Debug.Log ("angularSpeed: " + angularSpeed);
+		//Debug.Log ("speed: " + speed);
+		//Debug.Log ("===========================================");
 		// Set the mecanim parameters and apply the appropriate damping to them.
 		animator.SetFloat (hash.speedFloat, speed, speedDampTime, Time.deltaTime);
 		animator.SetFloat (hash.angularSpeedFloat, angularSpeed, angularSpeedDampTime, Time.deltaTime);
