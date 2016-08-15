@@ -39,8 +39,10 @@ public class EnemySight : MonoBehaviour
 	void Upgrade()
 	{
 			// If the last global sighting of the player has changed...
+			//If the last global sighting of the player is different of the player was sighted last frame
 		if (lastPlayerSighting.position != previousSighting)
 				// ... then update the personal sighting to be the same as the global sighting.
+				//Last place this enemy spotted the player  = last global sighting of the player
 			personalLastSighting = lastPlayerSighting.position;
 
 			// Set the previous sighting to the be the sighting from this frame.
@@ -56,10 +58,10 @@ public class EnemySight : MonoBehaviour
 	}
 
 		void OnTriggerStay (Collider other)
-		{
+		{						
 			// If the player has entered the trigger sphere...
 			if(other.gameObject == player)
-			{
+			{				
 				// By default the player is not in sight.
 				playerInSight = false;
 
@@ -69,12 +71,15 @@ public class EnemySight : MonoBehaviour
 
 				// If the angle between forward and where the player is, is less than half the angle of view...
 				if(angle < fieldOfViewAngle * 0.5f)
-				{
+				{					
 					RaycastHit hit;
+					Vector3 up = transform.up * 20;
+
+					Debug.DrawRay (transform.position + up, direction.normalized * 80, Color.green);
 
 					// ... and if a raycast towards the player hits something...
-					if(Physics.Raycast(transform.position + transform.up, direction.normalized, out hit, sphereCollider.radius))
-					{
+					if(Physics.Raycast(transform.position + up, direction.normalized, out hit, sphereCollider.radius * 50))
+					{	
 						// ... and if the raycast hits the player...
 						if(hit.collider.gameObject == player)
 						{
@@ -89,13 +94,13 @@ public class EnemySight : MonoBehaviour
 
 				// Store the name hashes of the current states.
 			int playerLayerZeroStateHash = playerAnimator.GetCurrentAnimatorStateInfo (0).nameHash;
-			int playerLayerOneStateHash = playerAnimator.GetCurrentAnimatorStateInfo (1).nameHash;
+			
 
 				// If the player is running or is attracting attention...
-				if(playerLayerZeroStateHash == hash.locomotionState || playerLayerOneStateHash == hash.shotState)
+				if(playerLayerZeroStateHash == hash.locomotionState)
 			{
 					// ... and if the player is within hearing range...
-				if(calculatePathLength(player.transform.position) <= sphereCollider.radius)
+				if(calculatePathLength(player.transform.position) <= sphereCollider.radius * 100)
 				{
 						// ... set the last personal sighting of the player to the player's current position.
 					personalLastSighting = player.transform.position;
@@ -119,7 +124,7 @@ public class EnemySight : MonoBehaviour
 
 		if (navMeshAgent.enabled)
 			navMeshAgent.CalculatePath (targetPosition, path);
-
+			Debug.Log (path.corners.Length);
 			// Create an array of points which is the length of the number of corners in the path + 2.
 		Vector3[] allWayPoints = new Vector3[path.corners.Length + 2];
 

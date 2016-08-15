@@ -26,7 +26,7 @@ public class EnemyAI : MonoBehaviour
 	{
 		// Setting up the references.
 		enemySight = GetComponent<EnemySight>();
-			navMeshAgent = GetComponent<NavMeshAgent>();
+		navMeshAgent = GetComponent<NavMeshAgent>();
 		player = GameObject.FindGameObjectWithTag(Tags.player).transform;
 		playerHealth = player.GetComponent<PlayerHealth>();
 		lastPlayerSighting = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent<LastPlayerSighting>();
@@ -102,7 +102,7 @@ public class EnemyAI : MonoBehaviour
 
 
 	void Patrolling ()
-	{
+	{			
 		// Set an appropriate speed for the NavMeshAgent.
 			navMeshAgent.speed = patrolSpeed;
 

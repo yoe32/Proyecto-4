@@ -103,8 +103,6 @@ public class PlayerHealth : MonoBehaviour
 
 	void decreaseShield()
 	{
-		Debug.Log ("Shield");
-
 		curShield -= 5f;
 		float calcShield = curShield / maxStat;
 		setShield (calcShield);
@@ -165,8 +163,7 @@ public class PlayerHealth : MonoBehaviour
 	}
 
 	void OnTriggerEnter(Collider collider)
-	{	
-			Debug.Log (collider.name);
+	{				
 		if (collider.name == "Flamethrower(Clone)" && curShield <= 0) 
 		{
 			decreaseHealth ();

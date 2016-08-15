@@ -30,9 +30,7 @@ public class EnemyShooting : MonoBehaviour
 
 
 	void Update ()
-	{
-
-			Debug.Log ("shooting: " + shooting);
+	{			
 		// Cache the current value of the shot curve.
 			float shot = animator.GetFloat(hash.shotFloat);
 
