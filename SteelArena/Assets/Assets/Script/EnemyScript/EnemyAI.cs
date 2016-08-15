@@ -20,16 +20,17 @@ public class EnemyAI : MonoBehaviour
 	private float chaseTimer;                               // A timer for the chaseWaitTime.
 	private float patrolTimer;                              // A timer for the patrolWaitTime.
 	private int wayPointIndex;                              // A counter for the way point array.
-
+	private GameObject[] bulletShooting;
 
 	void Awake ()
 	{
 		// Setting up the references.
 		enemySight = GetComponent<EnemySight>();
-			navMeshAgent = GetComponent<NavMeshAgent>();
+		navMeshAgent = GetComponent<NavMeshAgent>();
 		player = GameObject.FindGameObjectWithTag(Tags.player).transform;
 		playerHealth = player.GetComponent<PlayerHealth>();
 		lastPlayerSighting = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent<LastPlayerSighting>();
+		bulletShooting = GameObject.FindGameObjectsWithTag("EnemyBullet");
 	}
 
 
@@ -54,8 +55,15 @@ public class EnemyAI : MonoBehaviour
 
 	void Shooting ()
 	{
+			int i;
 		// Stop the enemy where it is.
 			navMeshAgent.Stop();
+
+			for (i = 0; i < bulletShooting.Length; i++) 
+			{
+				//Instantiate Bullet
+				bulletShooting[i].GetComponent<BulletShooting>().attack();
+			}
 	}
 
 
@@ -94,7 +102,7 @@ public class EnemyAI : MonoBehaviour
 
 
 	void Patrolling ()
-	{
+	{			
 		// Set an appropriate speed for the NavMeshAgent.
 			navMeshAgent.speed = patrolSpeed;
 

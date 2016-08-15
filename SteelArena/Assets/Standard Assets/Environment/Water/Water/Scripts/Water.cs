@@ -96,7 +96,7 @@ public class Water : MonoBehaviour
 			reflectionCamera.transform.eulerAngles = new Vector3(-euler.x, euler.y, euler.z);
 			reflectionCamera.Render();
 			reflectionCamera.transform.position = oldpos;
-			GL.SetRevertBackfacing (false);
+			GL.invertCulling = false;
 			GetComponent<Renderer>().sharedMaterial.SetTexture( "_ReflectionTex", m_ReflectionTexture );
 		}
 		

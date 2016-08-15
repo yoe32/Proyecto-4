@@ -15,7 +15,7 @@ public class PlayerDetection : MonoBehaviour
 	}
 
 
-	void OnTriggerStay(Collider other)
+	void OnTriggerEnter(Collider other)
 	{		
 			// ... and if the colliding gameobject is the player...
 		if(other.gameObject == player)

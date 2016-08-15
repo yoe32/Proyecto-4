@@ -36,7 +36,6 @@ public class BattleController : MonoBehaviour
 			for (i = 0; i <= robotBars.Length-1; i++) 
 			{
 				robotBars [i].GetComponent<Canvas> ().enabled = true;
-				Debug.Log (i);
 			}
 		}
 
