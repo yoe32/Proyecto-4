@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
 
 	public void NewGame()
 	{
-		splash.GetComponent<Canvas> ().enabled = false;
+			splash.GetComponent<Canvas> ().enabled = false;
 		splash.GetComponent<AudioSource> ().Stop ();
 		charging = false;
 		SceneManager.LoadScene ("LevelScene");
