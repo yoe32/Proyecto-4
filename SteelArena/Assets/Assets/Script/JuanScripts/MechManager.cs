@@ -333,18 +333,26 @@ public class MechManager : MonoBehaviour
 
 
 	public MechPrefab getMechPart(string name){
+		Debug.Log ("Buscamos: " + name);
 
 		MechPrefab mech = null;
-
+		int position = 0;
 		foreach (MechPrefab prefab in mechParts) {
-			string a = name.Remove(name.Length-7).ToString();
-			string b = prefab.gameObject.name.ToString();
-			/*Debug.Log (a);
-			Debug.Log (b);
-			Debug.Log (a.Equals(b));
-			*/
-			if (a.Equals(b))
-				return prefab;
+
+			Debug.Log ("pos: " + position);
+			position++;
+
+				string a = name.Remove (name.Length - 7).ToString ();
+				string b = prefab.gameObject.name.ToString ();
+				Debug.Log (a);
+				Debug.Log (b);
+				Debug.Log (a.Equals(b));
+				
+			if (a.Equals(b)) {
+				Debug.Log (">>>>>>>ENCONTRO!!!!!!!!!<<<<<<");  return prefab; 			
+			} else {
+				Debug.Log ("nada");
+			}
 		}
 		return mech;
 
@@ -356,18 +364,17 @@ public class MechManager : MonoBehaviour
 		//FindChildRecursive (rootGo.transform);
 		string receta = "";
 		foreach (MechPrefab prefab in _prefabList) {
-			Debug.Log (" EL NOMBRE ES  " + prefab.gameObject.name + " El mount es " + prefab.gameObject.transform.parent +  " y su mount es " + prefab );
+			Debug.Log (" EL NOMBRE ES  " + prefab.gameObject.name + " El mount es " + prefab.gameObject.transform.parent + " y su mount es " + prefab);
 
-			MechPrefab[] grandChildren = prefab.GetComponentsInChildren<MechPrefab>();
-			foreach(MechPrefab grandChild in grandChildren)
-			{		//Debug.Log (" EL Tiene un child de " + grandChild.gameObject.name);
+			MechPrefab[] grandChildren = prefab.GetComponentsInChildren<MechPrefab> ();
+			foreach (MechPrefab grandChild in grandChildren) {		//Debug.Log (" EL Tiene un child de " + grandChild.gameObject.name);
 				//Debug.Log (" La cantidad de childs es " + grandChildren.Length);			
 			}
 			//List<MechPrefab> c = GetParts();
 
-		//	Debug.Log (" el que encontro es " + test);
+			//	Debug.Log (" el que encontro es " + test);
 
-			MechPrefab test = getMechPart(prefab.gameObject.name);
+			MechPrefab test = getMechPart (prefab.gameObject.name);
 
 
 
@@ -384,14 +391,10 @@ public class MechManager : MonoBehaviour
 
 			}*/
 			//miniManager.mechParts = mechParts;
-			foreach (MechPrefab x in mechParts) {
-//				manager.mechParts.Add (x);
-			}
-		
 
+			//miniManager.SpawnPart(GetMechPart(test.gameObject.transform.name), prefab.m		ountedOn);
 
-			//miniManager.SpawnPart(GetMechPart(test.gameObject.transform.name), prefab.mountedOn);
-
+	
 
 			receta += test.gameObject.transform.name + "," + prefab.mountedOn + "|";
 		}
@@ -441,32 +444,7 @@ public class MechManager : MonoBehaviour
 
 
 	}
-
-
-	public static Transform FindChildRecursive(Transform root) {
-
-
-		if (root != null) {
-			Debug.Log (root.name);
-
-
-			Transform child = null;
-			foreach (Transform t in root.GetComponentsInChildren<Transform>()) {
-				if (t != null)
-				if (t.childCount > 0) {
-					//child = FindChildRecursive (t);
-
-				}
-				return null;
-			}
-
-			return null;
-
-
-		} else
-			return null;
-	}
-
+		
 
 
 	public void ScrollMount(){
@@ -612,7 +590,7 @@ public class MechManager : MonoBehaviour
 	public void SpawnPart(MechPrefab prefab, int mount)
 	{
 
-		Debug.Log (" EL INT QUE LLEGO ES  " + mount);
+		//Debug.Log (" EL INT QUE LLEGO ES  " + mount);
 
 		int amount = 0;
 
@@ -671,7 +649,7 @@ public class MechManager : MonoBehaviour
 		}
 
 
-		Debug.Log ("Monto el " + go.GetComponent<MechPrefab>().name + " y su mount es " + _currentMount );
+		//Debug.Log ("Monto el " + go.GetComponent<MechPrefab>().name + " y su mount es " + _currentMount );
 		go.GetComponent<MechPrefab> ().mountedOn = _currentMount;
 		AddPart(go.GetComponent<MechPrefab>());
 		UpdateGui();
