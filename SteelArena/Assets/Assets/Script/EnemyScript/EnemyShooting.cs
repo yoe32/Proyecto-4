@@ -41,7 +41,7 @@ public class EnemyShooting : MonoBehaviour
 			if (playerInSight.GetComponent<EnemySight> ().playerInSight == true && !shooting) 
 			{
 				// ... shoot
-				Shoot ();
+				StartCoroutine(Shoot ());
 			}
 			// If the shot curve is no longer peaking...
 			if(playerInSight.GetComponent<EnemySight>().playerInSight == false)
@@ -65,22 +65,27 @@ public class EnemyShooting : MonoBehaviour
 	}
 
 
-	void Shoot ()
+		IEnumerator Shoot ()
 	{		
 			int i;
-			int shotCounter = 5;
+			int shotCounter = 10;
 
 		// The enemy is shooting.
 		shooting = true;
 		
+			// Display the shot effects.
+			ShotEffects();
+
 			while (shotCounter > 0) 
 			{				
+				
 				for (i = 0; i < bulletShooting.Length; i++) 
 				{
 					//Instantiate Bullet
 					bulletShooting [i].GetComponent<BulletShooting> ().attack ();
 				}
 
+				yield return new WaitForSeconds (0.1f);
 				shotCounter--;
 			}
 		
@@ -89,10 +94,20 @@ public class EnemyShooting : MonoBehaviour
 			float fractionalDistance = (sphereCollider.radius - Vector3.Distance(transform.position, player.position)) / sphereCollider.radius * 10;
 				
 		// The player takes damage.
-		playerHealth.decreaseHealth();
+			if (playerHealth.curShield > 0f)
+				playerHealth.decreaseShield ();
+			else
+				playerHealth.decreaseHealth();
 					
-	}
 
+	}
+		void ShotEffects ()
+		{			
+
+			float volume = 2f;
+			// Play the gun shot clip at the position of the muzzle flare.
+						AudioSource.PlayClipAtPoint(shotClip, player.transform.position, volume);
+		}
 
 	
 }

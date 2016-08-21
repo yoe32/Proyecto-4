@@ -42,9 +42,9 @@ namespace DigitalRuby.PyroParticles
 			curEnergy = maxStat;
 			InvokeRepeating ("decreaseEnergy", 0f, 2f);
 
-			orangeLoadingBar = GameObject.FindGameObjectWithTag ("OrangeBar");
-			minesContainer = GameObject.FindGameObjectWithTag ("Container");
-			explotionContainer = GameObject.FindGameObjectWithTag("ExplotionContainer");
+
+			minesContainer = GameObject.FindGameObjectWithTag (Tags.minesContainer);
+			explotionContainer = GameObject.FindGameObjectWithTag(Tags.explotionContainer);
  		
 		}
 		void Update()
@@ -66,9 +66,8 @@ namespace DigitalRuby.PyroParticles
 					mine = Instantiate (prefabMine, minesContainer.transform.position, minesContainer.transform.rotation) as GameObject;
 					totalAmount -= speed;
 					number--;
-					if (number < 0)
+					if (number <= 0)
 						number = 0;
-
 				} 
 			}
 
@@ -157,7 +156,7 @@ namespace DigitalRuby.PyroParticles
 		private void IncreaseMinesBar()
 		{						
 			totalAmount += speed;
-			orangeLoadingBar.SetActive (true);
+			//orangeLoadingBar.SetActive (true);
 			number++;
 
 			if (number > 5)
@@ -168,7 +167,7 @@ namespace DigitalRuby.PyroParticles
 		{					
 			while (totalAmount <= 0) 
 			{						
-				orangeLoadingBar.SetActive (false);
+				//orangeLoadingBar.SetActive (false);
 				yield return new WaitForSeconds (3);
 			}
 		}
