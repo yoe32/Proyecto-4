@@ -58,10 +58,11 @@ public class EnemySight : MonoBehaviour
 	}
 
 		void OnTriggerStay (Collider other)
-		{						
+		{									
 			// If the player has entered the trigger sphere...
 			if(other.gameObject == player)
 			{				
+				//Debug.Log ("player passed");
 				// By default the player is not in sight.
 				playerInSight = false;
 
@@ -73,18 +74,19 @@ public class EnemySight : MonoBehaviour
 				if(angle < fieldOfViewAngle * 0.5f)
 				{					
 					RaycastHit hit;
-					Vector3 up = transform.up * 20;
+					Vector3 up = transform.up * 10;
 
-					Debug.DrawRay (transform.position + up, direction.normalized * 80, Color.green);
-
+					Debug.DrawRay (transform.position + up, transform.right * 100, Color.green);
+					Debug.DrawRay (transform.position + up, transform.forward * 100, Color.green);
 					// ... and if a raycast towards the player hits something...
-					if(Physics.Raycast(transform.position + up, direction.normalized, out hit, sphereCollider.radius * 50))
+					if(Physics.Raycast(transform.position + up, transform.forward, out hit, sphereCollider.radius * 10))
 					{	
 						// ... and if the raycast hits the player...
 						if(hit.collider.gameObject == player)
 						{
 							// ... the player is in sight.
 							playerInSight = true;
+							Debug.Log ("player in sight = true");
 
 							// Set the last global sighting is the players current position.
 							lastPlayerSighting.position = player.transform.position;
@@ -100,10 +102,11 @@ public class EnemySight : MonoBehaviour
 				if(playerLayerZeroStateHash == hash.locomotionState)
 			{
 					// ... and if the player is within hearing range...
-				if(calculatePathLength(player.transform.position) <= sphereCollider.radius * 100)
+				if(calculatePathLength(player.transform.position) <= sphereCollider.radius * 10)
 				{
 						// ... set the last personal sighting of the player to the player's current position.
 					personalLastSighting = player.transform.position;
+
 				}
 			}
 		}
@@ -115,6 +118,7 @@ public class EnemySight : MonoBehaviour
 		if (other.gameObject == player)
 				// ... the player is not in sight.
 			playerInSight = false;
+			
 	}
 
 	float calculatePathLength(Vector3 targetPosition)

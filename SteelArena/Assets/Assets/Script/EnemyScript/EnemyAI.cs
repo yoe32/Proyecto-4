@@ -36,35 +36,21 @@ public class EnemyAI : MonoBehaviour
 
 	void Update ()
 	{
-		// If the player is in sight and is alive...
-			if(enemySight.playerInSight && playerHealth.curHealth > 0f)
-			// ... shoot.
-			Shooting();
-
 		// If the player has been sighted and isn't dead...
-			else if(enemySight.personalLastSighting != lastPlayerSighting.resetPosition && playerHealth.curHealth > 0f)
-			// ... chase.
-			Chasing();
-
-		// Otherwise...
-		else
-			// ... patrol.
-			Patrolling();
-	}
-
-
-	void Shooting ()
-	{
-			int i;
-		// Stop the enemy where it is.
-			navMeshAgent.Stop();
-
-			for (i = 0; i < bulletShooting.Length; i++) 
+			if (enemySight.personalLastSighting != lastPlayerSighting.resetPosition && playerHealth.curHealth > 0f) 
 			{
-				//Instantiate Bullet
-				bulletShooting[i].GetComponent<BulletShooting>().attack();
+				// ... chase.
+				Chasing ();
+
+			}
+		// Otherwise...
+		else 
+			{				
+				// ... patrol.
+				Patrolling ();
 			}
 	}
+
 
 
 	void Chasing ()
@@ -87,7 +73,7 @@ public class EnemyAI : MonoBehaviour
 			chaseTimer += Time.deltaTime;
 
 			// If the timer exceeds the wait time...
-			if(chaseTimer >= chaseWaitTime)
+			if(chaseTimer > chaseWaitTime)
 			{
 				// ... reset last global sighting, the last personal sighting and the timer.
 				lastPlayerSighting.position = lastPlayerSighting.resetPosition;

@@ -13,16 +13,12 @@ public class BulletShooting : MonoBehaviour
 	public float Bullet_Forward_Force;
 
 
-	public void Update(){
-
-
-				if(Input.GetKeyDown(KeyCode.Space)){
+	public void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.Space))
+		{
 							attack ();
-						}
-			
-
-
-
+		}
 	}
 
 	public void attack()
