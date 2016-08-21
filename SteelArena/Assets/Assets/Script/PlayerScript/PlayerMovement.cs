@@ -42,15 +42,17 @@ public class PlayerMovement : MonoBehaviour
 		
 			animator.SetBool (hash.sneakingBool, sneaking);
 					
+
 		if (horizontal != 0f || vertical != 0f) 
-		{			
-			Rotating (horizontal, vertical);
-			animator.SetFloat (hash.speedFloat, 5.5f, speedDampTime, Time.deltaTime);
+		{				
+				Rotating (horizontal, vertical);
+				animator.SetFloat (hash.speedFloat, 3.0f, speedDampTime, Time.deltaTime);
 		} 
 		else 
 		{
 			animator.SetFloat (hash.speedFloat, 0f);
 		}
+
 	}
 
 	void Rotating(float horizontal, float vertical)

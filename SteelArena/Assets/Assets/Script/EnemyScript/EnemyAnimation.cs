@@ -26,7 +26,7 @@ public class EnemyAnimation : MonoBehaviour
 		hash = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent<HashIDs>();
 
 		// Making sure the rotation is controlled by Mecanim.
-		navMeshAgent.updateRotation = false;
+		navMeshAgent.updateRotation = true;
 
 		// Creating an instance of the AnimatorSetup class and calling it's constructor.
 		animatorSetup = new AnimatorSetup(animator, hash);
@@ -48,10 +48,10 @@ public class EnemyAnimation : MonoBehaviour
 
 
 	void OnAnimatorMove ()
-	{
-	
+	{	
 		// Set the NavMeshAgent's velocity to the change in position since the last frame, by the time it took for the last frame.	
-			//navMeshAgent.velocity = animator.deltaPosition / Time.deltaTime;
+		//navMeshAgent.velocity = animator.deltaPosition / Time.deltaTime;
+			this.GetComponent<Animator>().SetFloat("Speed", navMeshAgent.desiredVelocity.magnitude);
 
 		// The gameobject's rotation is driven by the animation's rotation.
 		transform.rotation = animator.rootRotation;
@@ -66,21 +66,20 @@ public class EnemyAnimation : MonoBehaviour
 
 		// If the player is in sight...
 		if(enemySight.playerInSight)
-			{
-				Debug.Log ("enemy position: " + transform.position);
-				Debug.Log ("player position: " + player.transform.position);
+			{				
 
 			// ... the enemy should stop...
 			speed = 0f;
 
 			// ... and the angle to turn through is towards the player.
 			angle = FindAngle(transform.forward, player.position - transform.position, transform.up);
+
 		}
 		else
-		{
-				
+		{				
 			// Otherwise the speed is a projection of desired velocity on to the forward vector...
 			speed = Vector3.Project(navMeshAgent.desiredVelocity, transform.forward).magnitude;
+
 			// ... and the angle is the angle between forward and the desired velocity.
 			angle = FindAngle(transform.forward, navMeshAgent.desiredVelocity, transform.up);
 
@@ -107,17 +106,17 @@ public class EnemyAnimation : MonoBehaviour
 
 		// Create a float to store the angle between the facing of the enemy and the direction it's travelling.
 		float angle = Vector3.Angle(fromVector, toVector);
-			Debug.Log ("angle from enemy to player: " + angle);
+		
 		// Find the cross product of the two vectors (this will point up if the velocity is to the right of forward).
 		Vector3 normal = Vector3.Cross(fromVector, toVector);
-			Debug.Log ("cross product: " + normal);
+
 		// The dot product of the normal with the upVector will be positive if they point in the same direction.
 		angle *= Mathf.Sign(Vector3.Dot(normal, upVector));
-			Debug.Log ("dot product: " + angle);
+
 		// We need to convert the angle we've found from degrees to radians.
 		angle *= Mathf.Deg2Rad;
-			Debug.Log ("from degrees to radians: " + angle);
-			Debug.Log ("----------------------------");
+
+
 		return angle;
 	}
 }
