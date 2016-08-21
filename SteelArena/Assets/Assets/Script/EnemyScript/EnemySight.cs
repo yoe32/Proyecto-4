@@ -79,7 +79,7 @@ public class EnemySight : MonoBehaviour
 					Debug.DrawRay (transform.position + up, transform.right * 100, Color.green);
 					Debug.DrawRay (transform.position + up, transform.forward * 100, Color.green);
 					// ... and if a raycast towards the player hits something...
-					if(Physics.Raycast(transform.position + up, transform.forward, out hit, sphereCollider.radius * 100))
+					if(Physics.Raycast(transform.position + up, transform.forward, out hit, sphereCollider.radius * 10))
 					{	
 						// ... and if the raycast hits the player...
 						if(hit.collider.gameObject == player)
@@ -102,7 +102,7 @@ public class EnemySight : MonoBehaviour
 				if(playerLayerZeroStateHash == hash.locomotionState)
 			{
 					// ... and if the player is within hearing range...
-					if(calculatePathLength(player.transform.position) <= sphereCollider.radius * 100)
+					if(calculatePathLength(player.transform.position) <= sphereCollider.radius * 10)
 				{
 						// ... set the last personal sighting of the player to the player's current position.
 					personalLastSighting = player.transform.position;

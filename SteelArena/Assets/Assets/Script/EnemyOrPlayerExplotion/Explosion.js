@@ -3,7 +3,7 @@
 function OnTriggerEnter( hit : Collider )
 { 
      
-     if(hit.gameObject.== "Player")
+     if(hit.gameObject.tag == "Player")
      {
      
       Destroy(hit.gameObject);
