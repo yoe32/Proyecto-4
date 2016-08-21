@@ -3,14 +3,13 @@ using System.Collections;
 using UnityEngine.UI;
 
 namespace DigitalRuby.PyroParticles
-{
-	public class PlayerHealth : MonoBehaviour 
+{/*
+	public class EnemyHealth : MonoBehaviour 
 	{
-		                      
-		//public AudioClip deathClip;                         // The sound effect of the player dying.
-		private EnemySight enemySight;
 
+		//public AudioClip deathClip;                         // The sound effect of the player dying.
 		BattleController sphereController;
+
 		private GameObject enemy;
 		public Transform explotionPrefab;
 
@@ -29,6 +28,7 @@ namespace DigitalRuby.PyroParticles
 
 		public GameObject blueFirePrefab;
 		private GameObject blueFireBall;
+		private GameObject explotionContainer;
 
 		private float totalAmount;
 		private float speed;
@@ -56,7 +56,7 @@ namespace DigitalRuby.PyroParticles
 			hash = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent<HashIDs>();
 			enemy = GameObject.FindGameObjectWithTag (Tags.enemy);
 			secondPlayerCamera = GameObject.FindGameObjectWithTag (Tags.secondPlayerCamera);
-			enemySight = enemy.GetComponent<EnemySight> ();
+
 		}
 
 		void Start()
@@ -70,19 +70,33 @@ namespace DigitalRuby.PyroParticles
 			number = 5;
 
 			minesContainer = GameObject.FindGameObjectWithTag (Tags.minesContainer);
+			explotionContainer = GameObject.FindGameObjectWithTag(Tags.explotionContainer);
 			fullMine = GameObject.FindGameObjectWithTag (Tags.fullMine);
 			orangeBar = GameObject.FindGameObjectWithTag (Tags.orangeBar);
 		}
 
 		void Update ()
 		{			
+			// If health is less than or equal to 0...
+			if(curHealth <= 0f)
+			{				
+				// ... and if the player is not yet dead...
+				if (!playerDead)
+					// ... call the PlayerDying function.
+					PlayerDying ();
+				else {
+					// Otherwise, if the player is dead, call the PlayerDead and LevelReset functions.
+					PlayerDead ();
+				}
+			}
+
 			if (number > 0)
 			{
 				orangeBar.GetComponent<Image> ().enabled = true;
 				fullMine.GetComponent<Image> ().enabled = true;
 			}
-				
-				
+
+
 			if (Input.GetMouseButtonDown (1)) 
 			{
 				if (totalAmount > 0) 
@@ -98,15 +112,24 @@ namespace DigitalRuby.PyroParticles
 					} 
 				} 
 			}
-				textIndicator.GetComponent<Text> ().text = (number).ToString ();
-				LoadingBar.GetComponent<Image> ().fillAmount =  totalAmount / 100;
+			textIndicator.GetComponent<Text> ().text = (number).ToString ();
+			LoadingBar.GetComponent<Image> ().fillAmount =  totalAmount / 100;
+		}
+
+		void PlayerDying ()
+		{
+			// The player is now dead.
+			playerDead = true;
+
+			// Set the animator's dead parameter to true also.
+			animator.SetBool(hash.deadBool, playerDead);
+
+			// Play the dying sound effect at the player's location.
+			//AudioSource.PlayClipAtPoint(deathClip, transform.position);		
 		}
 
 		void PlayerDead ()
 		{
-			// Stop the music playing.
-		//	GetComponent<AudioSource>().Stop();
-
 			// Disable the movement.
 			animator.SetFloat(hash.speedFloat, 0f);
 			playerMovement.enabled = false;
@@ -114,13 +137,7 @@ namespace DigitalRuby.PyroParticles
 			// Stop the music playing.
 			GetComponent<AudioSource>().Stop();
 
-			enemySight.playerInSight = false;
 
-			secondPlayerCamera.transform.parent = orangeBar.transform;
-
-			blueFireBall = Instantiate (explotionPrefab, GetComponent<Transform> ().transform.position, GetComponent<Transform> ().transform.rotation) as GameObject;
-			AudioSource.PlayClipAtPoint (mineClip, transform.position, 1.0f);
-			Destroy (this.gameObject);
 		}
 
 		public void decreaseHealth()
@@ -128,8 +145,8 @@ namespace DigitalRuby.PyroParticles
 			curHealth -= 5f;
 			float calcHealth = curHealth / maxStat;
 			setHealth (calcHealth);
-			if (curHealth <= 0f)
-				PlayerDead ();
+			if(curHealth <= 0f)
+				PlayerDying ();
 		}
 
 		void decreaseEnergy()
@@ -210,7 +227,7 @@ namespace DigitalRuby.PyroParticles
 
 		void OnTriggerEnter(Collider collider)
 		{				
-			
+
 			if (collider.name == "Flamethrower(Clone)" && curShield <= 0f)
 			{
 				if (curShield <= 0f)
@@ -231,58 +248,12 @@ namespace DigitalRuby.PyroParticles
 					else
 						decreaseShield ();
 
-					blueFireBall = Instantiate (blueFirePrefab, GetComponent<Transform>().transform.position,GetComponent<Transform>().transform.rotation) as GameObject;
+					blueFireBall = Instantiate (blueFirePrefab, explotionContainer.transform.position, explotionContainer.transform.rotation) as GameObject;
 					Destroy (collider.gameObject);
 					Destroy (blueFireBall, 3);
 					break;
 				}
-				
-			case "MinesBonus":
-				{
-					collider.GetComponent<MeshRenderer> ().enabled = false;
-					IncreaseMinesBar ();
-					break;
-				}
 
-			case "HealthBonus":
-				{		
-					collider.GetComponent<MeshRenderer> ().enabled = false;
-					increaseHealth (30);
-					break;
-				}
-			case "EnergyBonus":
-				{
-					collider.GetComponent<MeshRenderer> ().enabled = false;
-					increaseEnergy (20);
-					break;
-				}
-			case "ShieldBonus":
-				{	
-					collider.GetComponent<MeshRenderer> ().enabled = false;
-					setShield (1);
-					curShield = maxStat;								
-					break;
-				}			
-			case "Enemy":
-				{
-					if (enemySight.calculatePathLength(this.gameObject.transform.position) <= enemy.GetComponent<SphereCollider>().radius * 0.5 ) 
-					{
-						secondPlayerCamera.transform.parent = orangeBar.transform;
-
-						enemySight.playerInSight = false;
-
-						Destroy (collider.gameObject);
-						blueFireBall = Instantiate (explotionPrefab, GetComponent<Transform>().transform.position,GetComponent<Transform>().transform.rotation) as GameObject;
-						Destroy (this.gameObject);
-						AudioSource.PlayClipAtPoint(mineClip, transform.position, 1f);
-					}
-					break;
-				}
-			case "EnemyBullet":
-				{ Debug.Log("bullet destroyed");
-					Destroy (collider);
-					break;
-				}
 			}
 		}
 
@@ -295,23 +266,9 @@ namespace DigitalRuby.PyroParticles
 				StartCoroutine (sphereController.makeSphereAppearTimer (collider.GetComponent<MeshRenderer> ()));
 			}
 
-			switch (collider.tag) 
-			{
-			case "Dome":
-				{					
-					secondPlayerCamera.transform.parent = orangeBar.transform;
-
-					enemySight.playerInSight = false;
-
-					blueFireBall = Instantiate (explotionPrefab, GetComponent<Transform>().transform.position,GetComponent<Transform>().transform.rotation) as GameObject;
-					AudioSource.PlayClipAtPoint(mineClip, transform.position, 1.0f);
-					Destroy (this.gameObject);
-					Destroy (blueFireBall, 3);
-					break;
-				}
-			}
 		}
 
 	}
-
+*/		
 }
+

@@ -121,7 +121,7 @@ public class EnemySight : MonoBehaviour
 			
 	}
 
-	float calculatePathLength(Vector3 targetPosition)
+	public float calculatePathLength(Vector3 targetPosition)
 		{
 			// Create a path and set it based on a target position.
 		NavMeshPath path = new NavMeshPath ();
