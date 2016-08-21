@@ -18,13 +18,13 @@ function Update ()
 }
 function sphereFloatingUp()
 {
-	transform.position.y += 0.9 * Time.deltaTime;
+	transform.position.y += 0.2 * Time.deltaTime;
 	yield WaitForSeconds(1);
 	floatup = false;
 }
 function floatingDown()
 {
-	transform.position.y -= 0.9 * Time.deltaTime;
+	transform.position.y -= 0.2 * Time.deltaTime;
 	yield WaitForSeconds(1);
 	floatup = true;
 }
