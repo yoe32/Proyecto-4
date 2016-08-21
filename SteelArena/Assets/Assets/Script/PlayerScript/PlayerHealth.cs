@@ -107,6 +107,8 @@ namespace DigitalRuby.PyroParticles
 			// Stop the music playing.
 		//	GetComponent<AudioSource>().Stop();
 
+			secondPlayerCamera.GetComponent<Camera> ().enabled = true;
+
 			// Disable the movement.
 			animator.SetFloat(hash.speedFloat, 0f);
 			playerMovement.enabled = false;
@@ -267,6 +269,7 @@ namespace DigitalRuby.PyroParticles
 				{
 					if (enemySight.calculatePathLength(this.gameObject.transform.position) <= enemy.GetComponent<SphereCollider>().radius * 0.5 ) 
 					{
+						secondPlayerCamera.GetComponent<Camera> ().enabled = true;
 						secondPlayerCamera.transform.parent = orangeBar.transform;
 
 						enemySight.playerInSight = false;
@@ -299,6 +302,7 @@ namespace DigitalRuby.PyroParticles
 			{
 			case "Dome":
 				{					
+					secondPlayerCamera.GetComponent<Camera> ().enabled = true;
 					secondPlayerCamera.transform.parent = orangeBar.transform;
 
 					enemySight.playerInSight = false;
