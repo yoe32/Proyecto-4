@@ -85,6 +85,12 @@ public class EnemyShooting : MonoBehaviour
 					bulletShooting [i].GetComponent<BulletShooting> ().attack ();
 				}
 
+				// The player takes damage.
+				if (playerHealth.curShield > 0f)
+					playerHealth.decreaseShield ();
+				else
+					playerHealth.decreaseHealth();
+
 				yield return new WaitForSeconds (0.1f);
 				shotCounter--;
 			}
@@ -93,11 +99,7 @@ public class EnemyShooting : MonoBehaviour
 		// The fractional distance from the player, 1 is next to the player, 0 is the player is at the extent of the sphere collider.
 			float fractionalDistance = (sphereCollider.radius - Vector3.Distance(transform.position, player.position)) / sphereCollider.radius * 10;
 				
-		// The player takes damage.
-			if (playerHealth.curShield > 0f)
-				playerHealth.decreaseShield ();
-			else
-				playerHealth.decreaseHealth();
+		
 					
 
 	}

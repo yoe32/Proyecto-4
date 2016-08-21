@@ -10,5 +10,6 @@ public class Tags : MonoBehaviour
 	public const string minesContainer = "Container";
 	public const string explotionContainer = "ExplotionContainer";
 	public const string fullMine = "FullMine";
+	public const string secondPlayerCamera = "SecondPlayerCamera";
 
 }

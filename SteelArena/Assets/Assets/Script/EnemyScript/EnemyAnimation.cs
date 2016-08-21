@@ -65,16 +65,15 @@ public class EnemyAnimation : MonoBehaviour
 		float angle;
 
 		// If the player is in sight...
-		if(enemySight.playerInSight)
+			if (enemySight.playerInSight) 
 			{				
 
-			// ... the enemy should stop...
-			speed = 0f;
+				// ... the enemy should stop...
+				speed = 0f;
 
-			// ... and the angle to turn through is towards the player.
-			angle = FindAngle(transform.forward, player.position - transform.position, transform.up);
-
-		}
+				// ... and the angle to turn through is towards the player.
+				angle = FindAngle (transform.forward, player.position - transform.position, transform.up);
+			}
 		else
 		{				
 			// Otherwise the speed is a projection of desired velocity on to the forward vector...
