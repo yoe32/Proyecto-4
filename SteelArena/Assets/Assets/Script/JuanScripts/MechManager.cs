@@ -428,6 +428,8 @@ public class MechManager : MonoBehaviour
 
 		string recipe = PlayerPrefs.GetString("robotRecipe");
 
+		//recipe = "Legs_Spider_Med,0|Shoulders_Med_Tank,0|Weapon_Sniper_lvl2,0|Weapon_Sniper_lvl2,1|Cockpit_Gun_Flat_Full,4|Backpack_Tank_Hvy,2|Weapon_DoubleGun_lvl1,3|";
+
 		string[] parts = recipe.Split('|');
 
 		foreach (string s in parts) {
@@ -636,6 +638,7 @@ public class MechManager : MonoBehaviour
 				//playerScript.
 				playerScript.rbody = go.AddComponent<Rigidbody> ();
 				playerScript.rbody.constraints = RigidbodyConstraints.FreezeRotation;
+				playerScript.rbody.mass = 400;
 				playerScript.animator = animator;
 				playerScript.shieldBar = shieldBar;
 				playerScript.healthBar = healthBar;
