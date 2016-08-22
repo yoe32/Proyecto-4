@@ -10,6 +10,8 @@ namespace DigitalRuby.PyroParticles
 		//public AudioClip deathClip;                         // The sound effect of the player dying.
 		private EnemySight enemySight;
 
+		EnemyHealth enemyHealth;
+
 		BattleController sphereController;
 		private GameObject enemy;
 		public Transform explotionPrefab;
@@ -58,6 +60,7 @@ namespace DigitalRuby.PyroParticles
 			enemy = GameObject.FindGameObjectWithTag (Tags.enemy);
 			secondPlayerCamera = GameObject.FindGameObjectWithTag (Tags.secondPlayerCamera);
 			enemySight = enemy.GetComponent<EnemySight> ();
+			enemyHealth = GameObject.FindGameObjectWithTag (Tags.enemy).GetComponent<EnemyHealth> ();
 		}
 
 		void Start()
@@ -76,9 +79,7 @@ namespace DigitalRuby.PyroParticles
 		}
 
 		void Update ()
-		{			
-			
-
+		{				
 			if (number > 0)
 			{
 				orangeBar.GetComponent<Image> ().enabled = true;
@@ -105,9 +106,9 @@ namespace DigitalRuby.PyroParticles
 		}
 
 		void PlayerDead ()
-		{
-			// Stop the music playing.
-		//	GetComponent<AudioSource>().Stop();
+		{			
+			enemyHealth.decreaseShield (100);
+			enemyHealth.decreaseAllEnergy (100);
 
 			secondPlayerCamera.GetComponent<Camera> ().enabled = true;
 
@@ -227,7 +228,7 @@ namespace DigitalRuby.PyroParticles
 
 		void InTriggerStay(Collider collider)
 		{
-			if (collider.name == "Flamethrower(Clone)" && curShield <= 0f)
+			if (collider.name == "Flamethrower(Clone)")
 			{
 				if (curShield <= 0f)
 					decreaseHealth (5f);
@@ -239,6 +240,10 @@ namespace DigitalRuby.PyroParticles
 
 		void OnTriggerEnter(Collider collider)
 		{		
+			if (collider.name == "Proyectile_Bullet(Clone)") 
+			{				
+				Destroy (collider.gameObject);
+			}
 			switch (collider.tag) 
 			{
 			case "Mine":
@@ -286,6 +291,10 @@ namespace DigitalRuby.PyroParticles
 				{
 					if (enemySight.calculatePathLength(this.gameObject.transform.position) <= enemy.GetComponent<SphereCollider>().radius * 0.1 ) 
 					{
+						enemyHealth.decreaseHealth (100);
+						enemyHealth.decreaseShield (100);
+						enemyHealth.decreaseAllEnergy (100);
+
 						decreaseShield (100);
 						decreaseAllEnergy (100);
 						decreaseHealth (100);
@@ -302,11 +311,7 @@ namespace DigitalRuby.PyroParticles
 					}
 					break;
 				}
-			case "EnemyBullet":
-				{ 
-					Destroy (collider.gameObject);
-					break;
-				}
+			
 			}
 		}
 

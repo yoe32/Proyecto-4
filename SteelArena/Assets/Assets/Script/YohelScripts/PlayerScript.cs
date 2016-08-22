@@ -43,12 +43,10 @@ public class PlayerScript : MonoBehaviour
 			animator.Play ("Transform_to_Roller", -1, 0f);
 		}
 
-<<<<<<< HEAD
+
 
 		inputH = Input.GetAxis ("Horizontal");
-=======
 		inputH = Input.GetAxis ("Horizontal");	
->>>>>>> 78b2814960075e12c6f98b92cd0981514494a120
 		inputV = Input.GetAxis ("Vertical");
 
 		animator.SetFloat ("inputH", inputH);

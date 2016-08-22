@@ -86,6 +86,7 @@ namespace DigitalRuby.PyroParticles
 								//Instantiate Bullet
 								bulletShooting [i].GetComponent<BulletShooting> ().attack ();
 							}
+							yield return new WaitForSeconds (0.1f);
 						}
 
 						// The player takes damage.
@@ -93,15 +94,13 @@ namespace DigitalRuby.PyroParticles
 							playerHealth.decreaseShield (5f);
 						else
 							playerHealth.decreaseHealth (5f);
-					
-						yield return new WaitForSeconds (0.1f);
-						shotCounter--;
-						
+											
+						shotCounter--;						
 				}
-			
-				yield return new WaitForSeconds (80f);
 
-				shooting = false;
+			yield return new WaitForSeconds (5f);
+
+			shooting = false;
 
 				if (playerHealth.curHealth > 0f) 
 				{

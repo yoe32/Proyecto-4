@@ -575,7 +575,7 @@ public class MechManager : MonoBehaviour
 
 
 	public void saveAndLeave(){
-<<<<<<< HEAD
+
 
 
 		printOrder ();	
@@ -587,22 +587,9 @@ public class MechManager : MonoBehaviour
 		else if (levelScene.GetComponent<ChangeScenes>().buttonClicked.tag == Tags.level3)*/
 			UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
 
-=======
-		printOrder ();	
-		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
+
+
 	}
-
-	public void leave(){
-		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
->>>>>>> 78b2814960075e12c6f98b92cd0981514494a120
-	}
-
-
-
-
-
-
-
 
 	public void SpawnPart(MechPrefab prefab, int mount)
 	{

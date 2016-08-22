@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		animator = GetComponent<Animator> ();
 		hash = GameObject.FindGameObjectWithTag (Tags.gameController).GetComponent < HashIDs> ();
-		bulletShooting = GameObject.FindGameObjectsWithTag("Bullet");
+		bulletShooting = GameObject.FindGameObjectsWithTag("PlayerBullet");
 		countdownController = GameObject.FindGameObjectWithTag (Tags.gameController);
 		rigidbody = GetComponent<Rigidbody> ();
 		animator.SetLayerWeight (1, 1f);

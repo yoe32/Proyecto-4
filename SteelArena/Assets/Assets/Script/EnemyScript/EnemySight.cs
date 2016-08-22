@@ -86,7 +86,6 @@ public class EnemySight : MonoBehaviour
 						{
 							// ... the player is in sight.
 							playerInSight = true;
-							Debug.Log ("player in sight = true");
 
 							// Set the last global sighting is the players current position.
 							lastPlayerSighting.position = player.transform.position;

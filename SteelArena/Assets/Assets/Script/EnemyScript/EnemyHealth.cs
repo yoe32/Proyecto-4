@@ -21,11 +21,6 @@ namespace DigitalRuby.PyroParticles
 		private GameObject mine;
 		private GameObject minesContainer;
 
-		private GameObject enemyFullMine;
-		private GameObject enemyRedBar;
-		public Transform LoadingBar;
-		public Transform textIndicator;
-
 		public GameObject blueFirePrefab;
 		private GameObject blueFireBall;
 
@@ -70,19 +65,6 @@ namespace DigitalRuby.PyroParticles
 			number = 5;
 
 			minesContainer = GameObject.FindGameObjectWithTag (Tags.minesContainer);
-			enemyFullMine = GameObject.FindGameObjectWithTag (Tags.enemyFullMine);
-			enemyRedBar = GameObject.FindGameObjectWithTag (Tags.enemyRedBar);
-		}
-
-		void Update ()
-		{	
-			if (number > 0)
-			{
-				enemyRedBar.GetComponent<Image> ().enabled = true;
-				enemyFullMine.GetComponent<Image> ().enabled = true;
-			}			
-
-			StartCoroutine (throwMine ());
 
 		}
 
@@ -90,7 +72,6 @@ namespace DigitalRuby.PyroParticles
 		{			
 			decreaseShield (100);
 			decreaseAllEnergy (100);
-			decreaseHealth (100);
 
 			blueFireBall = Instantiate (blueFirePrefab, GetComponent<Transform> ().transform.position, GetComponent<Transform> ().transform.rotation) as GameObject;
 			AudioSource.PlayClipAtPoint (mineClip, transform.position, 1.0f);
@@ -122,7 +103,7 @@ namespace DigitalRuby.PyroParticles
 			setEnergy (calcEnergy);
 		}
 
-		void decreaseAllEnergy(float ammount)
+		public void decreaseAllEnergy(float ammount)
 		{
 			curEnergy -= ammount;
 			float calcEnergy = curEnergy / maxStat;
@@ -151,64 +132,63 @@ namespace DigitalRuby.PyroParticles
 			shieldBar.fillAmount = shield;
 		}
 
-		IEnumerator throwMine()
-		{
-			int random = Random.Range (1000, 1500);
-
-			yield return new WaitForSeconds (random);
-
-			if (totalAmount > 0) 
-			{					
-				mine = Instantiate (prefabMine, minesContainer.transform.position, minesContainer.transform.rotation) as GameObject;
-				totalAmount -= speed;
-				number--;
-				if (number <= 0) 
-				{
-					enemyRedBar.GetComponent<Image> ().enabled = false;
-					enemyFullMine.GetComponent<Image> ().enabled = false;
-					number = 0;
-				} 
-			}
-
-			textIndicator.GetComponent<Text> ().text = (number).ToString ();
-			LoadingBar.GetComponent<Image> ().fillAmount =  totalAmount / 100;
-		}
 		void InTriggerStay(Collider collider)
 		{
-			if (collider.name == "Flamethrower(Clone)" && curShield <= 0f)
-			{
-				if (curShield <= 0f)
-					decreaseHealth (5f);
-				else
-					decreaseShield (5f);
-
+			if (collider.name == "Flamethrower(Clone)")
+			{				
+				if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<SphereCollider> ().radius) 
+				{
+					if (curShield <= 0f)
+						decreaseHealth (5f);
+					else
+						decreaseShield (5f);
+				}
 			}
 		}
 
 		void OnTriggerEnter(Collider collider)
 		{		
+			if (collider.name == "Proyectile_Bullet(Clone)") 
+			{
+				if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<SphereCollider> ().radius) 
+				{
+					if (curShield <= 0f)
+						decreaseHealth (5f);
+					else
+						decreaseShield (5f);
+					Destroy (collider.gameObject);
+				}
+
+			}
+
+			Debug.Log (collider.name);
 			switch (collider.tag) 
 			{
 			case "Mine":
 				{
-					if (curShield <= 0f) 
+					if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<CapsuleCollider> ().radius)
 					{
-						decreaseHealth (10f);
-					} 
-					else
-						decreaseShield (10f);
-
-					blueFireBall = Instantiate (blueFirePrefab, GetComponent<Transform>().transform.position,GetComponent<Transform>().transform.rotation) as GameObject;
-					Destroy (collider.gameObject);
-					Destroy (blueFireBall, 3);
+						if (curShield <= 0f) {
+							decreaseHealth (5f);
+						} else
+							decreaseShield (5f);
+					
+						blueFireBall = Instantiate (blueFirePrefab, GetComponent<Transform> ().transform.position, GetComponent<Transform> ().transform.rotation) as GameObject;
+						Destroy (collider.gameObject);
+						Destroy (blueFireBall, 3);
+					}
 					break;
 				}						
 			
 			case "Bullet":
 				{ 
-					decreaseHealth (10f);
-					Destroy (collider.gameObject);
-					break;
+					if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<CapsuleCollider> ().radius) 
+					{
+						decreaseHealth (5f);
+						Destroy (collider.gameObject);
+					}
+						break;
+					
 				}
 			}
 		}

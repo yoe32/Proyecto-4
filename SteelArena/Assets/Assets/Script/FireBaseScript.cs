@@ -65,9 +65,13 @@ namespace DigitalRuby.PyroParticles
                     System.Array.IndexOf(ManualParticleSystems, p) < 0)
                 {
                     if (p.startDelay == 0.0f)
-                    {
+					{
                         // wait until next frame because the transform may change
                         p.startDelay = 0.01f;
+						if (AudioSource != null)
+						{
+							//AudioSource.Play();
+						}
                     }
 
                     p.Play();
@@ -85,11 +89,7 @@ namespace DigitalRuby.PyroParticles
 
         protected virtual void Start()
         {
-            if (AudioSource != null)
-            {
-                AudioSource.Play();
-            }
-
+			
             // precalculate so we can multiply instead of divide every frame
             stopTimeMultiplier = 1.0f / StopTime;
             startTimeMultiplier = 1.0f / StartTime;
@@ -126,6 +126,7 @@ namespace DigitalRuby.PyroParticles
             }
             else if (Starting)
             {
+				
                 // increase the start time
                 startTimeIncrement += Time.deltaTime;
                 if (startTimeIncrement < StartTime)
