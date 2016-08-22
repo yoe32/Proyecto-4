@@ -5,18 +5,13 @@ using DigitalRuby.PyroParticles;
 //using UnityEditor;
 using System;
 
-
-
-/// comentario
-
-
 public class MechManager : MonoBehaviour
 {
 	public List<MechPrefab> mechParts; //= new List<MechPrefab>();
 
 	private MechType _mechType = MechType.Biped;
 	private MechSize _mechSize = MechSize.Light;
-
+	private GameObject levelScene;
 
 
 	public bool isPlaying = false;
@@ -80,6 +75,8 @@ public class MechManager : MonoBehaviour
 		///cameraPos =   new Vector3(50,30,10);
 		/// 
 		/// 
+		levelScene = GameObject.FindGameObjectWithTag(Tags.levelAudio);
+
 		if (isPlaying) {
 			makeFromMemory ();
 			Debug.Log ("EL ROOT GO ES " + rootGo);
@@ -573,11 +570,15 @@ public class MechManager : MonoBehaviour
 
 	public void saveAndLeave(){
 
+
 		printOrder ();	
-		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
-
-
-
+		/*Debug.Log (levelScene.GetComponent<ChangeScenes>().buttonClicked.tag);
+		if(levelScene.GetComponent<ChangeScenes>().buttonClicked.tag == Tags.level1)
+			UnityEngine.SceneManagement.SceneManager.LoadScene("CityBattleScene");
+		else if (levelScene.GetComponent<ChangeScenes>().buttonClicked.tag == Tags.level2)
+			UnityEngine.SceneManagement.SceneManager.LoadScene("DesertScene");
+		else if (levelScene.GetComponent<ChangeScenes>().buttonClicked.tag == Tags.level3)*/
+			UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
 
 	}
 

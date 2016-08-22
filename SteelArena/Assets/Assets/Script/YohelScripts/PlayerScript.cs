@@ -39,6 +39,7 @@ public class PlayerScript : MonoBehaviour
 			animator.Play ("Transform_to_Roller", -1, 0f);
 		}
 
+
 		inputH = Input.GetAxis ("Horizontal");
 		inputV = Input.GetAxis ("Vertical");
 

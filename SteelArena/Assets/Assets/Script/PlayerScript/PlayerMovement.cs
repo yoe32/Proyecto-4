@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 	public float speedDampTime = 0.1f;
 	private GameObject[] bulletShooting;
 	private GameObject countdownController;
+	private Rigidbody rigidbody;
 	private Animator animator;
 	private HashIDs hash;
 
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
 		hash = GameObject.FindGameObjectWithTag (Tags.gameController).GetComponent < HashIDs> ();
 		bulletShooting = GameObject.FindGameObjectsWithTag("Bullet");
 		countdownController = GameObject.FindGameObjectWithTag (Tags.gameController);
+		rigidbody = GetComponent<Rigidbody> ();
 		animator.SetLayerWeight (1, 1f);
 	}
 
@@ -24,6 +26,11 @@ public class PlayerMovement : MonoBehaviour
 		float horizontal = Input.GetAxis ("Horizontal");
 		float vertical = Input.GetAxis ("Vertical");
 		bool sneak = Input.GetButton ("Sneak");
+
+		if(Input.GetKeyDown("1"))
+		{
+			animator.Play ("Transform_to_Roller", 3);
+		}
 
 		MovementManagement (horizontal, vertical, sneak);
 	}

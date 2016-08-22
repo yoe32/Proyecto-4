@@ -3,15 +3,15 @@ using System.Collections;
 using UnityEngine.UI;
 
 namespace DigitalRuby.PyroParticles
-{/*
+{
 	public class EnemyHealth : MonoBehaviour 
 	{
 
 		//public AudioClip deathClip;                         // The sound effect of the player dying.
-		BattleController sphereController;
+		private EnemySight enemySight;
 
+		BattleController sphereController;
 		private GameObject enemy;
-		public Transform explotionPrefab;
 
 		private GameObject secondPlayerCamera;
 
@@ -21,26 +21,26 @@ namespace DigitalRuby.PyroParticles
 		private GameObject mine;
 		private GameObject minesContainer;
 
-		private GameObject fullMine;
-		private GameObject orangeBar;
+		private GameObject enemyFullMine;
+		private GameObject enemyRedBar;
 		public Transform LoadingBar;
 		public Transform textIndicator;
 
 		public GameObject blueFirePrefab;
 		private GameObject blueFireBall;
-		private GameObject explotionContainer;
 
 		private float totalAmount;
 		private float speed;
 		private int number;
 
+		//Player Bars
 		public Image healthBar;
 		public Image energyBar;
 		public Image shieldBar;
 		public float curHealth = 0f;						// How much health the player has left.
-		float curEnergy = 0f;
+		private float curEnergy = 0f;
 		public float curShield = 0f;
-		float maxStat = 100f;
+		private float maxStat = 100f;
 
 		private Animator animator;                              // Reference to the animator component.
 		private PlayerMovement playerMovement;              // Reference to the player movement script.
@@ -56,7 +56,7 @@ namespace DigitalRuby.PyroParticles
 			hash = GameObject.FindGameObjectWithTag(Tags.gameController).GetComponent<HashIDs>();
 			enemy = GameObject.FindGameObjectWithTag (Tags.enemy);
 			secondPlayerCamera = GameObject.FindGameObjectWithTag (Tags.secondPlayerCamera);
-
+			enemySight = enemy.GetComponent<EnemySight> ();
 		}
 
 		void Start()
@@ -70,144 +70,70 @@ namespace DigitalRuby.PyroParticles
 			number = 5;
 
 			minesContainer = GameObject.FindGameObjectWithTag (Tags.minesContainer);
-			explotionContainer = GameObject.FindGameObjectWithTag(Tags.explotionContainer);
-			fullMine = GameObject.FindGameObjectWithTag (Tags.fullMine);
-			orangeBar = GameObject.FindGameObjectWithTag (Tags.orangeBar);
+			enemyFullMine = GameObject.FindGameObjectWithTag (Tags.enemyFullMine);
+			enemyRedBar = GameObject.FindGameObjectWithTag (Tags.enemyRedBar);
 		}
 
 		void Update ()
-		{			
-			// If health is less than or equal to 0...
-			if(curHealth <= 0f)
-			{				
-				// ... and if the player is not yet dead...
-				if (!playerDead)
-					// ... call the PlayerDying function.
-					PlayerDying ();
-				else {
-					// Otherwise, if the player is dead, call the PlayerDead and LevelReset functions.
-					PlayerDead ();
-				}
-			}
-
+		{	
 			if (number > 0)
 			{
-				orangeBar.GetComponent<Image> ().enabled = true;
-				fullMine.GetComponent<Image> ().enabled = true;
-			}
+				enemyRedBar.GetComponent<Image> ().enabled = true;
+				enemyFullMine.GetComponent<Image> ().enabled = true;
+			}			
 
-
-			if (Input.GetMouseButtonDown (1)) 
-			{
-				if (totalAmount > 0) 
-				{					
-					mine = Instantiate (prefabMine, minesContainer.transform.position, minesContainer.transform.rotation) as GameObject;
-					totalAmount -= speed;
-					number--;
-					if (number <= 0) 
-					{
-						orangeBar.GetComponent<Image> ().enabled = false;
-						fullMine.GetComponent<Image> ().enabled = false;
-						number = 0;
-					} 
-				} 
-			}
-			textIndicator.GetComponent<Text> ().text = (number).ToString ();
-			LoadingBar.GetComponent<Image> ().fillAmount =  totalAmount / 100;
-		}
-
-		void PlayerDying ()
-		{
-			// The player is now dead.
-			playerDead = true;
-
-			// Set the animator's dead parameter to true also.
-			animator.SetBool(hash.deadBool, playerDead);
-
-			// Play the dying sound effect at the player's location.
-			//AudioSource.PlayClipAtPoint(deathClip, transform.position);		
-		}
-
-		void PlayerDead ()
-		{
-			// Disable the movement.
-			animator.SetFloat(hash.speedFloat, 0f);
-			playerMovement.enabled = false;
-
-			// Stop the music playing.
-			GetComponent<AudioSource>().Stop();
-
+			StartCoroutine (throwMine ());
 
 		}
 
-		public void decreaseHealth()
+		void EnemyDead ()
 		{			
-			curHealth -= 5f;
-			float calcHealth = curHealth / maxStat;
-			setHealth (calcHealth);
-			if(curHealth <= 0f)
-				PlayerDying ();
+			decreaseShield (100);
+			decreaseAllEnergy (100);
+			decreaseHealth (100);
+
+			blueFireBall = Instantiate (blueFirePrefab, GetComponent<Transform> ().transform.position, GetComponent<Transform> ().transform.rotation) as GameObject;
+			AudioSource.PlayClipAtPoint (mineClip, transform.position, 1.0f);
+			Destroy (this.gameObject);
+
+
+		}
+
+		public void decreaseHealth(float ammount)
+		{						
+			if (curShield > 0) 
+			{
+				decreaseShield (ammount);
+			} else 
+			{
+				curHealth -= ammount;
+				float calcHealth = curHealth / maxStat;
+				setHealth (calcHealth);
+
+				if (curHealth <= 0f)
+					EnemyDead ();
+			}
 		}
 
 		void decreaseEnergy()
-		{			
-			curEnergy -= 2f;
+		{
+			curEnergy -= 5f;
 			float calcEnergy = curEnergy / maxStat;
 			setEnergy (calcEnergy);
 		}
 
-		public void decreaseShield()
+		void decreaseAllEnergy(float ammount)
 		{
-			curShield -= 5f;
-			float calcShield = curShield / maxStat;
-			setShield (calcShield);
-		}
-
-		void increaseHealth(float ammount)
-		{
-			curHealth += ammount;
-
-			if(curHealth > 100f)
-			{
-				curHealth = maxStat;
-			}
-
-			float calcHealth = curHealth / maxStat;
-			setHealth (calcHealth);
-		}
-
-		void increaseEnergy(float ammount)
-		{
-			curEnergy += ammount;
-
-			if(curEnergy > 100f)
-			{
-				curEnergy = maxStat;
-			}
-
+			curEnergy -= ammount;
 			float calcEnergy = curEnergy / maxStat;
 			setEnergy (calcEnergy);
-		}
+		} 
 
-		void increaseShield(float ammount)
+		public void decreaseShield(float ammount)
 		{
-			curShield += ammount;
-
-			if(curShield > 100f)
-			{
-				curShield = maxStat;
-			}
-
+			curShield -= ammount;
 			float calcShield = curShield / maxStat;
 			setShield (calcShield);
-		}
-		private void IncreaseMinesBar()
-		{						
-			totalAmount += speed;
-			number++;
-
-			if (number > 5)
-				number = 5;
 		}
 
 		void setHealth(float health)
@@ -225,50 +151,67 @@ namespace DigitalRuby.PyroParticles
 			shieldBar.fillAmount = shield;
 		}
 
-		void OnTriggerEnter(Collider collider)
-		{				
+		IEnumerator throwMine()
+		{
+			int random = Random.Range (1000, 1500);
 
+			yield return new WaitForSeconds (random);
+
+			if (totalAmount > 0) 
+			{					
+				mine = Instantiate (prefabMine, minesContainer.transform.position, minesContainer.transform.rotation) as GameObject;
+				totalAmount -= speed;
+				number--;
+				if (number <= 0) 
+				{
+					enemyRedBar.GetComponent<Image> ().enabled = false;
+					enemyFullMine.GetComponent<Image> ().enabled = false;
+					number = 0;
+				} 
+			}
+
+			textIndicator.GetComponent<Text> ().text = (number).ToString ();
+			LoadingBar.GetComponent<Image> ().fillAmount =  totalAmount / 100;
+		}
+		void InTriggerStay(Collider collider)
+		{
 			if (collider.name == "Flamethrower(Clone)" && curShield <= 0f)
 			{
 				if (curShield <= 0f)
-					decreaseHealth ();
+					decreaseHealth (5f);
 				else
-					decreaseShield ();
+					decreaseShield (5f);
 
 			}
+		}
+
+		void OnTriggerEnter(Collider collider)
+		{		
 			switch (collider.tag) 
 			{
-
 			case "Mine":
 				{
 					if (curShield <= 0f) 
 					{
-						decreaseHealth ();
+						decreaseHealth (10f);
 					} 
 					else
-						decreaseShield ();
+						decreaseShield (10f);
 
-					blueFireBall = Instantiate (blueFirePrefab, explotionContainer.transform.position, explotionContainer.transform.rotation) as GameObject;
+					blueFireBall = Instantiate (blueFirePrefab, GetComponent<Transform>().transform.position,GetComponent<Transform>().transform.rotation) as GameObject;
 					Destroy (collider.gameObject);
 					Destroy (blueFireBall, 3);
 					break;
+				}						
+			
+			case "Bullet":
+				{ 
+					decreaseHealth (10f);
+					Destroy (collider.gameObject);
+					break;
 				}
-
 			}
 		}
-
-		void  OnTriggerExit(Collider collider)
-		{
-			if (collider.tag == "MinesBonus" || collider.tag == "HealthBonus" || collider.tag == "EnergyBonus" || collider.tag == "ShieldBonus") 
-			{
-				sphereController = new BattleController ();
-
-				StartCoroutine (sphereController.makeSphereAppearTimer (collider.GetComponent<MeshRenderer> ()));
-			}
-
-		}
-
 	}
-*/		
 }
 

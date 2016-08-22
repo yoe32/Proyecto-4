@@ -34,13 +34,14 @@ namespace DigitalRuby.PyroParticles
 		private float speed;
 		private int number;
 
+		//Player Bars
 		public Image healthBar;
 		public Image energyBar;
 		public Image shieldBar;
 		public float curHealth = 0f;						// How much health the player has left.
-		float curEnergy = 0f;
+		private float curEnergy = 0f;
 		public float curShield = 0f;
-		float maxStat = 100f;
+		private float maxStat = 100f;
 
 		private Animator animator;                              // Reference to the animator component.
 		private PlayerMovement playerMovement;              // Reference to the player movement script.
@@ -76,12 +77,13 @@ namespace DigitalRuby.PyroParticles
 
 		void Update ()
 		{			
+			
+
 			if (number > 0)
 			{
 				orangeBar.GetComponent<Image> ().enabled = true;
 				fullMine.GetComponent<Image> ().enabled = true;
-			}
-				
+			}				
 				
 			if (Input.GetMouseButtonDown (1)) 
 			{
@@ -125,25 +127,38 @@ namespace DigitalRuby.PyroParticles
 			Destroy (this.gameObject);
 		}
 
-		public void decreaseHealth()
-		{			
-			curHealth -= 5f;
-			float calcHealth = curHealth / maxStat;
-			setHealth (calcHealth);
-			if (curHealth <= 0f)
-				PlayerDead ();
+		public void decreaseHealth(float ammount)
+		{						
+			if (curShield > 0) {
+				decreaseShield (ammount);
+			} else 
+			{
+				curHealth -= ammount;
+				float calcHealth = curHealth / maxStat;
+				setHealth (calcHealth);
+
+				if (curHealth <= 0f)
+					PlayerDead ();
+			}
 		}
 
 		void decreaseEnergy()
-		{			
-			curEnergy -= 2f;
+		{
+			curEnergy -= 5;
 			float calcEnergy = curEnergy / maxStat;
 			setEnergy (calcEnergy);
 		}
 
-		public void decreaseShield()
+		void decreaseAllEnergy(float ammount)
 		{
-			curShield -= 5f;
+			curEnergy -= ammount;
+			float calcEnergy = curEnergy / maxStat;
+			setEnergy (calcEnergy);
+		} 
+
+		public void decreaseShield(float ammount)
+		{
+			curShield -= ammount;
 			float calcShield = curShield / maxStat;
 			setShield (calcShield);
 		}
@@ -210,28 +225,30 @@ namespace DigitalRuby.PyroParticles
 			shieldBar.fillAmount = shield;
 		}
 
-		void OnTriggerEnter(Collider collider)
-		{				
-			
+		void InTriggerStay(Collider collider)
+		{
 			if (collider.name == "Flamethrower(Clone)" && curShield <= 0f)
 			{
 				if (curShield <= 0f)
-					decreaseHealth ();
+					decreaseHealth (5f);
 				else
-					decreaseShield ();
+					decreaseShield (5f);
 
 			}
+		}
+
+		void OnTriggerEnter(Collider collider)
+		{		
 			switch (collider.tag) 
 			{
-
 			case "Mine":
 				{
 					if (curShield <= 0f) 
 					{
-						decreaseHealth ();
+						decreaseHealth (10f);
 					} 
 					else
-						decreaseShield ();
+						decreaseShield (10f);
 
 					blueFireBall = Instantiate (blueFirePrefab, GetComponent<Transform>().transform.position,GetComponent<Transform>().transform.rotation) as GameObject;
 					Destroy (collider.gameObject);
@@ -249,26 +266,30 @@ namespace DigitalRuby.PyroParticles
 			case "HealthBonus":
 				{		
 					collider.GetComponent<MeshRenderer> ().enabled = false;
-					increaseHealth (30);
+					increaseHealth (60f);
 					break;
 				}
 			case "EnergyBonus":
 				{
 					collider.GetComponent<MeshRenderer> ().enabled = false;
-					increaseEnergy (20);
+					increaseEnergy (60f);
 					break;
 				}
 			case "ShieldBonus":
 				{	
 					collider.GetComponent<MeshRenderer> ().enabled = false;
-					setShield (1);
+					setShield (100f);
 					curShield = maxStat;								
 					break;
 				}			
 			case "Enemy":
 				{
-					if (enemySight.calculatePathLength(this.gameObject.transform.position) <= enemy.GetComponent<SphereCollider>().radius * 0.5 ) 
+					if (enemySight.calculatePathLength(this.gameObject.transform.position) <= enemy.GetComponent<SphereCollider>().radius * 0.1 ) 
 					{
+						decreaseShield (100);
+						decreaseAllEnergy (100);
+						decreaseHealth (100);
+
 						secondPlayerCamera.GetComponent<Camera> ().enabled = true;
 						secondPlayerCamera.transform.parent = orangeBar.transform;
 
@@ -282,8 +303,8 @@ namespace DigitalRuby.PyroParticles
 					break;
 				}
 			case "EnemyBullet":
-				{ Debug.Log("bullet destroyed");
-					Destroy (collider);
+				{ 
+					Destroy (collider.gameObject);
 					break;
 				}
 			}
@@ -301,7 +322,11 @@ namespace DigitalRuby.PyroParticles
 			switch (collider.tag) 
 			{
 			case "Dome":
-				{					
+				{				
+					decreaseShield (100);
+					decreaseAllEnergy (100);
+					decreaseHealth (100);
+
 					secondPlayerCamera.GetComponent<Camera> ().enabled = true;
 					secondPlayerCamera.transform.parent = orangeBar.transform;
 

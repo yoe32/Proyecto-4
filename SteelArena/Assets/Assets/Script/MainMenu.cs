@@ -10,21 +10,21 @@ public class MainMenu : MonoBehaviour
 
 	void Start()
 	{
-		splash = GameObject.FindGameObjectWithTag("SplashAudio");
+		splash = GameObject.FindGameObjectWithTag(Tags.splashAudio);
 	}
 
 	public void NewGame()
 	{
-			splash.GetComponent<Canvas> ().enabled = false;
+		splash.GetComponent<Canvas> ().enabled = false;
 		splash.GetComponent<AudioSource> ().Stop ();
 		charging = false;
-		SceneManager.LoadScene ("LevelScene");
+		SceneManager.LoadScene ("LevelMenu");
 	}
 
 	public void Continue()
 	{
 		charging = true;
-		SceneManager.LoadScene ("CityBattleScene");		
+		//SceneManager.LoadScene ("CityBattleScene");		
 
 	}
 
