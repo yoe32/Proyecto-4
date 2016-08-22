@@ -311,6 +311,11 @@ namespace DigitalRuby.PyroParticles
 					}
 					break;
 				}
+			case "BulletPlayer":
+				{					
+					Destroy (collider.gameObject);
+					break;
+				}
 			
 			}
 		}

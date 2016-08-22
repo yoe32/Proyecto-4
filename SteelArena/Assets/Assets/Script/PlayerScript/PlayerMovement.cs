@@ -72,8 +72,11 @@ public class PlayerMovement : MonoBehaviour
 	void attack()
 	{		
 		int i;
-		for(i = 0; i < bulletShooting.Length; i++)
-			bulletShooting[i].GetComponent<BulletShooting>().attack();
+		for (i = 0; i < bulletShooting.Length; i++) 
+		{
+			bulletShooting [i].GetComponent<BulletShooting> ().Bullet.tag = "BulletEnemy";
+			bulletShooting [i].GetComponent<BulletShooting> ().attack ();
+		}
 			
 		}
 

@@ -84,6 +84,7 @@ namespace DigitalRuby.PyroParticles
 							if (playerHealth.curHealth > 0f) 
 							{
 								//Instantiate Bullet
+								bulletShooting[i].GetComponent<BulletShooting>().Bullet.tag = "BulletPlayer";
 								bulletShooting [i].GetComponent<BulletShooting> ().attack ();
 							}
 							yield return new WaitForSeconds (0.1f);

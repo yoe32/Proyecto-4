@@ -180,9 +180,9 @@ namespace DigitalRuby.PyroParticles
 					break;
 				}						
 			
-			case "Bullet":
+			case "BulletEnemy":
 				{ 
-					if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<CapsuleCollider> ().radius) 
+					if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<CapsuleCollider> ().radius * 20) 
 					{
 						decreaseHealth (5f);
 						Destroy (collider.gameObject);
