@@ -166,7 +166,7 @@ namespace DigitalRuby.PyroParticles
 			{
 			case "Mine":
 				{
-					if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<CapsuleCollider> ().radius)
+					if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<CapsuleCollider> ().radius * 10)
 					{
 						if (curShield <= 0f) {
 							decreaseHealth (5f);
@@ -184,7 +184,7 @@ namespace DigitalRuby.PyroParticles
 				{ 
 					if (enemySight.calculatePathLength (collider.gameObject.transform.position) <= enemy.GetComponent<CapsuleCollider> ().radius * 20) 
 					{
-						decreaseHealth (5f);
+						decreaseHealth (2f);
 						Destroy (collider.gameObject);
 					}
 						break;

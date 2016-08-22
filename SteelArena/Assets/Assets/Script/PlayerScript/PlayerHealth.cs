@@ -117,7 +117,7 @@ namespace DigitalRuby.PyroParticles
 			playerMovement.enabled = false;
 
 			// Stop the music playing.
-			GetComponent<AudioSource>().Stop();
+			//GetComponent<AudioSource>().Stop();
 
 			enemySight.playerInSight = false;
 
@@ -240,10 +240,7 @@ namespace DigitalRuby.PyroParticles
 
 		void OnTriggerEnter(Collider collider)
 		{		
-			if (collider.name == "Proyectile_Bullet(Clone)") 
-			{				
-				Destroy (collider.gameObject);
-			}
+			
 			switch (collider.tag) 
 			{
 			case "Mine":
@@ -289,7 +286,7 @@ namespace DigitalRuby.PyroParticles
 				}			
 			case "Enemy":
 				{
-					if (enemySight.calculatePathLength(this.gameObject.transform.position) <= enemy.GetComponent<SphereCollider>().radius * 0.1 ) 
+					if (enemySight.calculatePathLength(this.gameObject.transform.position) <= enemy.GetComponent<SphereCollider>().radius) 
 					{
 						enemyHealth.decreaseHealth (100);
 						enemyHealth.decreaseShield (100);
@@ -315,8 +312,7 @@ namespace DigitalRuby.PyroParticles
 				{					
 					Destroy (collider.gameObject);
 					break;
-				}
-			
+				}			
 			}
 		}
 

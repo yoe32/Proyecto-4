@@ -92,9 +92,9 @@ namespace DigitalRuby.PyroParticles
 
 						// The player takes damage.
 						if (playerHealth.curShield > 0f)
-							playerHealth.decreaseShield (5f);
+							playerHealth.decreaseShield (2f);
 						else
-							playerHealth.decreaseHealth (5f);
+							playerHealth.decreaseHealth (2f);
 											
 						shotCounter--;						
 				}
