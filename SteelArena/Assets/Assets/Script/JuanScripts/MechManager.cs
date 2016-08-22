@@ -130,23 +130,27 @@ public class MechManager : MonoBehaviour
 
 			if (!firstTime) {
 
-				if (!fixedCam) {	
 
-				//	Camera.main.transform.position = Vector3.zero;
+				if (isPlaying) {
+
+					if (!fixedCam) {	
+
+						//	Camera.main.transform.position = Vector3.zero;
+						Camera.main.transform.parent = rootGo.transform;
+						//	Camera.main.transform.position = rootGo.transform.position;
+						Camera.main.transform.localPosition = new Vector3 (0, 10, -10);
+						//Camera.main.transform.position = new Vector3(0, 15, -20);
+						Camera.main.transform.Rotate (20, 0, 0);
+
+
+						fixedCam = true;
+					}
 					Camera.main.transform.parent = rootGo.transform;
-				//	Camera.main.transform.position = rootGo.transform.position;
-					Camera.main.transform.localPosition = new Vector3(0,10,-10);
-					//Camera.main.transform.position = new Vector3(0, 15, -20);
-					Camera.main.transform.Rotate (20,0,0);
 
+					//rootGo.GetComponent<Rigidbody> ().AddForce ();
+					//rootGo.transform.position += Vector3.up;
 
-					fixedCam = true;
 				}
-				Camera.main.transform.parent = rootGo.transform;
-
-				//rootGo.GetComponent<Rigidbody> ().AddForce ();
-				//rootGo.transform.position += Vector3.up;
-
 			}
 
 		}
@@ -572,14 +576,14 @@ public class MechManager : MonoBehaviour
 
 
 	public void saveAndLeave(){
-
 		printOrder ();	
 		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
-
-
-
-
 	}
+
+	public void leave(){
+		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
+	}
+
 
 
 
@@ -630,7 +634,8 @@ public class MechManager : MonoBehaviour
 				GameObject.Find ("Canvas").GetComponentInChildren<MapCanvasController> ().playerTransform = rootGo.transform;
 				PlayerScript playerScript = go.AddComponent<PlayerScript> ();
 				//playerScript.
-				playerScript.rbody = go.GetComponent<Rigidbody> ();
+				playerScript.rbody = go.AddComponent<Rigidbody> ();
+				playerScript.rbody.constraints = RigidbodyConstraints.FreezeRotation;
 				playerScript.animator = animator;
 				playerScript.shieldBar = shieldBar;
 				playerScript.healthBar = healthBar;

@@ -15,6 +15,7 @@ public class PlayerScript : MonoBehaviour
 	public Rigidbody rbody;
 	float inputH;
 	float inputV;
+	protected bool isDead = false;
 
 	// Use this for initialization
 	void Start () 
@@ -31,7 +32,10 @@ public class PlayerScript : MonoBehaviour
 	{
 		if (curHealth <= 0) 
 		{
-			animator.Play ("Death", -1, 0f);
+			if (!isDead) {
+				animator.Play ("Death", -1, 0f);
+				isDead = true;
+			}
 		}
 
 		if(Input.GetKeyDown("1"))
@@ -39,7 +43,7 @@ public class PlayerScript : MonoBehaviour
 			animator.Play ("Transform_to_Roller", -1, 0f);
 		}
 
-		inputH = Input.GetAxis ("Horizontal");
+		inputH = Input.GetAxis ("Horizontal");	
 		inputV = Input.GetAxis ("Vertical");
 
 		animator.SetFloat ("inputH", inputH);
