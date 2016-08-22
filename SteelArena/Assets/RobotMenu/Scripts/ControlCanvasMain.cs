@@ -31,8 +31,7 @@ public class ControlCanvasMain : MonoBehaviour {
 
     public void TouchButtomItem(string point)
     {
-        if(point == "Mount_cockpit" || point == "Mount_Weapon_top" || point == "Mount_Weapon_Main"
-            || point == "Top")
+        if(point == "Mount_cockpit"|| point == "Top")
         {
             vandera = false;
             GPanelCockpit.SetActive(false);
@@ -58,7 +57,8 @@ public class ControlCanvasMain : MonoBehaviour {
         }
         else if (point == "Mount_Weapon_L" || point == "Mount_Weapon_R" || point == "Mount_Shoulder_rockets_lvl2_L"
             || point == "Mount_Shoulder_rockets_lvl2_R" || point == "Mount_Shoulder_rockets_lvl1_L"
-            || point == "Mount_Shoulder_rockets_lvl1_R" || point == "Mount_HalfShoulder_L" || point == "Mount_HalfShoulder_R")
+            || point == "Mount_Shoulder_rockets_lvl1_R" || point == "Mount_HalfShoulder_L" || point == "Mount_HalfShoulder_R"
+			|| point == "Mount_Weapon_top" || point == "Mount_Weapon_Main")
         {
             vandera = false;
             GPanelCockpit.SetActive(false);

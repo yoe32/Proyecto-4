@@ -127,23 +127,27 @@ public class MechManager : MonoBehaviour
 
 			if (!firstTime) {
 
-				if (!fixedCam) {	
 
-				//	Camera.main.transform.position = Vector3.zero;
+				if (isPlaying) {
+
+					if (!fixedCam) {	
+
+						//	Camera.main.transform.position = Vector3.zero;
+						Camera.main.transform.parent = rootGo.transform;
+						//	Camera.main.transform.position = rootGo.transform.position;
+						Camera.main.transform.localPosition = new Vector3 (0, 10, -10);
+						//Camera.main.transform.position = new Vector3(0, 15, -20);
+						Camera.main.transform.Rotate (20, 0, 0);
+
+
+						fixedCam = true;
+					}
 					Camera.main.transform.parent = rootGo.transform;
-				//	Camera.main.transform.position = rootGo.transform.position;
-					Camera.main.transform.localPosition = new Vector3(0,10,-10);
-					//Camera.main.transform.position = new Vector3(0, 15, -20);
-					Camera.main.transform.Rotate (20,0,0);
 
+					//rootGo.GetComponent<Rigidbody> ().AddForce ();
+					//rootGo.transform.position += Vector3.up;
 
-					fixedCam = true;
 				}
-				Camera.main.transform.parent = rootGo.transform;
-
-				//rootGo.GetComponent<Rigidbody> ().AddForce ();
-				//rootGo.transform.position += Vector3.up;
-
 			}
 
 		}
@@ -421,6 +425,8 @@ public class MechManager : MonoBehaviour
 
 		string recipe = PlayerPrefs.GetString("robotRecipe");
 
+		//recipe = "Legs_Spider_Med,0|Shoulders_Med_Tank,0|Weapon_Sniper_lvl2,0|Weapon_Sniper_lvl2,1|Cockpit_Gun_Flat_Full,4|Backpack_Tank_Hvy,2|Weapon_DoubleGun_lvl1,3|";
+
 		string[] parts = recipe.Split('|');
 
 		foreach (string s in parts) {
@@ -569,6 +575,7 @@ public class MechManager : MonoBehaviour
 
 
 	public void saveAndLeave(){
+<<<<<<< HEAD
 
 
 		printOrder ();	
@@ -580,7 +587,16 @@ public class MechManager : MonoBehaviour
 		else if (levelScene.GetComponent<ChangeScenes>().buttonClicked.tag == Tags.level3)*/
 			UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
 
+=======
+		printOrder ();	
+		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
 	}
+
+	public void leave(){
+		UnityEngine.SceneManagement.SceneManager.LoadScene("MoonSceneTest");
+>>>>>>> 78b2814960075e12c6f98b92cd0981514494a120
+	}
+
 
 
 
@@ -631,7 +647,9 @@ public class MechManager : MonoBehaviour
 				GameObject.Find ("Canvas").GetComponentInChildren<MapCanvasController> ().playerTransform = rootGo.transform;
 				PlayerScript playerScript = go.AddComponent<PlayerScript> ();
 				//playerScript.
-				playerScript.rbody = go.GetComponent<Rigidbody> ();
+				playerScript.rbody = go.AddComponent<Rigidbody> ();
+				playerScript.rbody.constraints = RigidbodyConstraints.FreezeRotation;
+				playerScript.rbody.mass = 400;
 				playerScript.animator = animator;
 				playerScript.shieldBar = shieldBar;
 				playerScript.healthBar = healthBar;

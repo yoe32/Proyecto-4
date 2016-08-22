@@ -37,9 +37,9 @@ public class ButtPanelAction : MonoBehaviour
         pPanControl = GameObject.FindGameObjectsWithTag("TagPointPrefabs");
         foreach (GameObject i in pPanControl)
         {
-            GameObject pEsfera = Instantiate(Esfera.gameObject, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-            pEsfera.transform.parent = i.transform;
-            pEsfera.transform.position = i.transform.position;
+         //   GameObject pEsfera = Instantiate(Esfera.gameObject, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+         //   pEsfera.transform.parent = i.transform;
+         //   pEsfera.transform.position = i.transform.position;
         }
     }
 
