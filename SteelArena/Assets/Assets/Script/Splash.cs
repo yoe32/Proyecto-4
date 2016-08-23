@@ -53,7 +53,7 @@ public class Splash : MonoBehaviour {
 	{
 		for (int i = 0; i < images.Length; i++)
 		{
-			if (i == 1) 
+			if (i == 0) 
 			{
 				PlayMusic ();
 				DontDestroyOnLoad (deadmau5Audio);

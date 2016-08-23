@@ -8,6 +8,7 @@ public class EnemyAnimation : MonoBehaviour
 
 	public float deadZone = 5f;					// The number of degrees for which the rotation isn't controlled by Mecanim.
 
+	private PlayerHealth playerHealth; 
 	private Transform player;
 	private EnemySight enemySight;
 	private NavMeshAgent navMeshAgent;               // Reference to the nav mesh agent.
@@ -19,6 +20,7 @@ public class EnemyAnimation : MonoBehaviour
 	void Awake ()
 	{
 		// Setting up the references.
+			playerHealth = GameObject.FindGameObjectWithTag(Tags.player).GetComponent<PlayerHealth>();
 		player = GameObject.FindGameObjectWithTag(Tags.player).transform;
 		enemySight = GetComponent<EnemySight>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
@@ -70,9 +72,11 @@ public class EnemyAnimation : MonoBehaviour
 
 				// ... the enemy should stop...
 				speed = 0f;
-
-				// ... and the angle to turn through is towards the player.
-				angle = FindAngle (transform.forward, player.position - transform.position, transform.up);
+				if (playerHealth.curHealth >= 0f) 
+				{
+					// ... and the angle to turn through is towards the player.
+					angle = FindAngle (transform.forward, player.position - transform.position, transform.up);
+				}
 			}
 		else
 		{				
@@ -92,7 +96,7 @@ public class EnemyAnimation : MonoBehaviour
 		}
 
 		// Call the Setup function of the helper class with the given parameters.
-		animatorSetup.Setup(speed, angle);
+		//animatorSetup.Setup(speed, angle);
 	}
 
 
